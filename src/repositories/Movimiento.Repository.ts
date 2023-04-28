@@ -2,15 +2,15 @@ import { DeleteResult, EntityRepository, Repository, UpdateResult } from "typeor
 import {MysqlDataSource} from "../configs/db";
 import { ListPaginate } from "../entities/dto/GeneralDto"
 import { EstadoEnum } from "../configs/Config.enum"
-import { ApuestaDto } from "../entities/dto/ApuestaDto";
+import { MovimientoDto } from "../entities/dto/MovimientoDto";
 import { ObjectID } from "mongodb";
-import { Apuesta } from "../entities/Movimiento";
+import { Movimiento } from "../entities/Movimiento";
 
 
-class ApuestaRepository {
-    private repository = MysqlDataSource.getRepository(Apuesta);
+class MovmientoRepository {
+    private repository = MysqlDataSource.getRepository(Movimiento);
 
-    public async  findByDto (params: ApuestaDto): Promise<ListPaginate |null>{
+    public async  findByDto (params: MovimientoDto): Promise<ListPaginate |null>{
         let options={}
         options={...params}
         const [result,total] = await this.repository.findAndCount(options);
@@ -21,7 +21,7 @@ class ApuestaRepository {
         }
     };
 
-    public async  findById (params: string): Promise<Apuesta | null>{    
+    public async  findById (params: string): Promise<Movimiento | null>{    
         let options={}
         options = {
             where: {
@@ -32,7 +32,7 @@ class ApuestaRepository {
         return result
     };
 
-    public async findByNombre (params: string): Promise<Apuesta | null>{    
+    public async findByNombre (params: string): Promise<Movimiento | null>{    
         let options={}
         options = {
             where: {
@@ -43,7 +43,7 @@ class ApuestaRepository {
         return result
     };
 
-    public async  findByINId (params: string[]): Promise<Apuesta[]>{    
+    public async  findByINId (params: string[]): Promise<Movimiento[]>{    
         let options={}
         options={
             where: {
@@ -60,12 +60,12 @@ class ApuestaRepository {
         return firstUser;
     };
     
-    public async  actualizar (id:string, param: ApuestaDto){
+    public async  actualizar (id:string, param: MovimientoDto){
         const firstUser = await this.repository.update(id,param);
         return firstUser;
     };
     
-    public async  delete (params: Apuesta): Promise<DeleteResult>{
+    public async  delete (params: Movimiento): Promise<DeleteResult>{
         let options={}
         options={params}
         const firstUser = await this.repository.delete(options);
@@ -87,10 +87,10 @@ class ApuestaRepository {
         }
     };
 
-    public async save(params: Apuesta): Promise<Apuesta> {
+    public async save(params: Movimiento): Promise<Movimiento> {
         const oRol = await this.repository.save(params);
         return oRol;
     };
 
 }
-export default new ApuestaRepository();
+export default new MovmientoRepository();

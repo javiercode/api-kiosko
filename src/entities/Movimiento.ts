@@ -1,30 +1,21 @@
 import {Column, Entity, CreateDateColumn, PrimaryGeneratedColumn } from 'typeorm';
 import { EstadoEnum } from '../configs/Config.enum';
-import { ApuestaDto } from './dto/ApuestaDto';
+import { MovimientoDto } from './dto/MovimientoDto';
 
-@Entity('apuesta')
-export class Apuesta{
+@Entity('movimiento')
+export class Movimiento{
     
     @PrimaryGeneratedColumn({name:"ID"})
     id: number
 
-    @Column({name:"COD_PARTIDO"})
-    codPartido:number
+    @Column({name:"COD_PRODUCTO"})
+    codProducto:number
 
-    @Column({name:"COD_ROL_USER"})
-    codRolUser:number
+    @Column({name:"FECHA"})
+    fecha:Date
 
-    @Column({name:"LOCAL"})
-    local:number
-
-    @Column({name:"VISITANTE"})
-    visitante:number
-
-    @Column({name:"LOCAL_PENAL"})
-    localPenal:number
-
-    @Column({name:"VISITANTE_PENAL"})
-    visitantePenal:number
+    @Column({name:"MONTO"})
+    monto:number
 
     @Column({name:"ESTADO",default: EstadoEnum.ACTIVO, length:1})
     estado:string
@@ -41,13 +32,10 @@ export class Apuesta{
     @Column({name:"USUARIO_MODIFICACION", length:50,nullable:true})
     usuarioModificacion:string
     
-    constructor(params: ApuestaDto = {} as ApuestaDto){
-        this.codPartido = (params.codPartido);
-        this.codRolUser = (params.codRolUser);
-        this.local = params.local;
-        this.visitante = params.visitante;
-        this.localPenal = params.localPenal;
-        this.visitantePenal = params.visitantePenal;
+    constructor(params: MovimientoDto = {} as MovimientoDto){
+        this.codProducto = (params.codProducto);
+        this.fecha = (params.fecha);
+        this.monto = params.monto;
         this.estado = this.estado || EstadoEnum.ACTIVO;
     }
 }

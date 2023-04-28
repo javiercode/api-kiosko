@@ -2,21 +2,21 @@ import { Between, DeleteResult, EntityRepository, LessThanOrEqual, Repository, U
 import {MysqlDataSource} from "../configs/db";
 import { ListPaginate } from "../entities/dto/GeneralDto"
 import { EstadoEnum } from "../configs/Config.enum"
-import { PartidoDto } from "../entities/dto/PartidoDto";
+import { ProductoDto } from "../entities/dto/ProductoDto";
 import { ObjectID } from "mongodb";
 import { Producto } from "../entities/Producto";
 import { getFecha } from "../configs/General.functions";
 
-class PartidoRepository {
+class ProductoRepository {
     private repository = MysqlDataSource.getRepository(Producto);
 
-    public async  findByDto (params: PartidoDto | Producto): Promise<Producto |null>{
+    public async  findByDto (params: ProductoDto | Producto): Promise<Producto |null>{
         let options={}
         options={
             where: {
-                local: params.codLocal,
-                visitante: params.codVisitante,
-                fecha:params.fecha,
+                codCategoria: params.codCategoria,
+                marca: params.marca,
+                nombre:params.nombre,
                 estado: EstadoEnum.ACTIVO
             },
         }
@@ -64,7 +64,7 @@ class PartidoRepository {
         return firstUser;
     };
     
-    public async  actualizar (id:string, param: PartidoDto){
+    public async  actualizar (id:string, param: ProductoDto){
         const firstUser = await this.repository.update(id,param);
         return firstUser;
     };
@@ -99,7 +99,7 @@ class PartidoRepository {
         endDate.setHours(23, 59, 59, 999);
         const [result,total] = await this.repository.findAndCount({
             where:{
-                fecha:Between(startDate,endDate),
+                // fecha:Between(startDate,endDate),
             },
             
         });        
@@ -144,4 +144,4 @@ class PartidoRepository {
     };
 
 }
-export default new PartidoRepository();
+export default new ProductoRepository();

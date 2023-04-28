@@ -1,7 +1,6 @@
 import { DataSource,createConnections } from "typeorm";
-import { Apuesta } from "../entities/Movimiento";
-import { Equipo } from "../entities/Equipo";
-import { Grupo } from "../entities/Categoria";
+import { Movimiento } from "../entities/Movimiento";
+import { Categoria } from "../entities/Categoria";
 import { Producto } from "../entities/Producto";
 import { Rol } from "../entities/Rol";
 import { RolUser } from "../entities/RolUser";
@@ -32,19 +31,13 @@ export const MysqlDataSource = new DataSource({
     synchronize: false,
     logging: false,
     ssl:false,
-    extra: {
-         ssl: {
-             rejectUnauthorized: true,
-         },
-     },
+    // extra: {
+    //      ssl: {
+    //          rejectUnauthorized: false,
+    //      },
+    //  },
     entities: [
         // "./src/entities/*.ts"
-Apuesta,
-Equipo,
-Grupo,
-Producto,
-Rol,
-RolUser,
-User,
+        Movimiento,Categoria,Producto,Rol,RolUser,User,
     ]
 })

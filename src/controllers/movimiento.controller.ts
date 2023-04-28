@@ -1,12 +1,12 @@
 import { Request, response, Response } from "express";
 import { getAuthUser } from '../configs/TokenMiddleware';
-import ApuestaService from '../services/Apuesta.service';
+import ApuestaService from '../services/Movimiento.service';
 import { MessageResponse } from "../entities/dto/GeneralDto";
 import { TypeKeyParamEnum } from "../configs/Config.enum";
 import { validateParams } from "../configs/General.functions";
-import { ApuestaDto, ApuestaEditDto, ApuestaRegex, OApuestaRegex } from "../entities/dto/ApuestaDto";
+import { MovimientoDto, ApuestaRegex, OApuestaRegex } from "../entities/dto/MovimientoDto";
 
-class ApuestaController {
+class MovimientoController {
 
     public async test(req: Request, res: Response) {
         const { page, limit } = req.params;
@@ -22,7 +22,7 @@ class ApuestaController {
     }
 
     public async create(req: Request, res: Response) {
-        const dto = req.body as ApuestaDto;
+        const dto = req.body as MovimientoDto;
         let result = validate(dto);
         if(result.success){
             result = await ApuestaService.create(dto, getAuthUser(req));
@@ -31,7 +31,7 @@ class ApuestaController {
     }
 
     public async edit(req: Request, res: Response) {
-        const dto = req.body as ApuestaEditDto;
+        const dto = req.body as MovimientoDto;
         let result = validateParams(req.params.id,TypeKeyParamEnum.OBJECT_ID)
         
         if(result.success){
@@ -49,7 +49,7 @@ class ApuestaController {
     }
 }
 
-function validate(dataForm: ApuestaDto): MessageResponse {
+function validate(dataForm: MovimientoDto): MessageResponse {
     let res: MessageResponse = { success: false, message: "Error de validación del(los) campo(s): ", code: 0 };
     try {
         let campoError = [] as string[];
@@ -69,4 +69,4 @@ function validate(dataForm: ApuestaDto): MessageResponse {
     
     return res;
 }
-export default new ApuestaController();
+export default new MovimientoController();

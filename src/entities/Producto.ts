@@ -1,34 +1,21 @@
 import {Column, Entity, PrimaryColumn, CreateDateColumn, OneToOne, JoinColumn,ManyToOne, BaseEntity, Index, PrimaryGeneratedColumn } from 'typeorm';
-import { PartidoDto } from './dto/PartidoDto';
+import { ProductoDto } from './dto/ProductoDto';
 import { EstadoEnum } from '../configs/Config.enum';
-import { Equipo } from './Equipo';
 
 @Entity('producto')
 export class Producto{
     
     @PrimaryGeneratedColumn({name:"ID"})
-    public id: number
+    id: number
 
-    @Column({name:"LOCAL"})
-    codLocal: number
+    @Column({name:"NOMBRE"})
+    nombre: string
 
-    @Column({name:"VISITANTE"})
-    codVisitante: number
+    @Column({name:"COD_CATEGORIA"})
+    codCategoria: number
 
-    @Column({name:"FECHA"})
-    fecha: Date
-
-    @Column({name:"MARCADOR_LOCAL",nullable:true})
-    marcadorLocal: number
-
-    @Column({name:"MARCADOR_VISITANTE",nullable:true})
-    marcadorVisitante: number
-
-    @Column({name:"PENALES_LOCAL",nullable:true})
-    penalesLocal: number
-
-    @Column({name:"PENALES_VISITANTE",nullable:true})
-    penalesVisitante: number
+    @Column({name:"MARCA"})
+    marca: string
 
     @Column({name:"ESTADO",default: EstadoEnum.ACTIVO,length:1})
     estado:string
@@ -45,22 +32,10 @@ export class Producto{
     @Column({name:"USUARIO_MODIFICACION", length:50,nullable:true})
     usuarioModificacion:string
 
-    @OneToOne(() => Equipo)
-    @JoinColumn({name:'LOCAL'})
-    local: Equipo
-
-    @OneToOne(() => Equipo)
-    @JoinColumn({name:'VISITANTE'})
-    visitante: Equipo
-    
-    constructor(params: PartidoDto = {} as PartidoDto){
-        this.codLocal= (params.codLocal);
-        this.codVisitante= (params.codVisitante);
-        this.fecha= params.fecha;
-        this.marcadorLocal= params.marcadorLocal;
-        this.marcadorVisitante= params.marcadorVisitante;
-        this.penalesLocal= params.penalesLocal;
-        this.penalesVisitante= params.penalesVisitante;
+    constructor(params: ProductoDto = {} as ProductoDto){
+        this.nombre= (params.nombre);
+        this.codCategoria= (params.codCategoria);
+        this.marca= params.marca;
         this.estado = this.estado || EstadoEnum.ACTIVO;
     }
 }

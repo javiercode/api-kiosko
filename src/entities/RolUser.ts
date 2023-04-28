@@ -1,7 +1,7 @@
 import {Column, Entity, PrimaryColumn, CreateDateColumn, OneToOne,OneToMany, PrimaryGeneratedColumn, JoinColumn} from 'typeorm';
 import { RolUserDto } from './dto/RolUserDto';
 import { EstadoEnum } from '../configs/Config.enum';
-import { Grupo } from './Categoria';
+import { Categoria } from './Categoria';
 import { Rol } from './Rol';
 import { User } from './User';
 

@@ -1,13 +1,13 @@
 import { JwtPayload } from '../entities/dto/GeneralDto';
-import { ApuestaEditDto, ApuestaDto } from '../entities/dto/ApuestaDto';
-import { Apuesta} from '../entities/Movimiento';
-import ApuestaRepository from '../repositories/Apuesta.Repository';
+import { MovimientoDto } from '../entities/dto/MovimientoDto';
+import { Movimiento} from '../entities/Movimiento';
+import MovmientoRepository from '../repositories/Movimiento.Repository';
 import { MessageResponse } from '../entities/dto/GeneralDto'
 import { getFecha } from '../configs/General.functions';
 import IApuesta from './interfaces/IApuesta.interface';
 import fs from 'fs';
 
-class EquipoService implements IApuesta {
+class MovimientoService implements IApuesta {
 
     async test(authSession: JwtPayload): Promise<MessageResponse> {
         console.log("__dirname", __dirname);
@@ -31,7 +31,7 @@ class EquipoService implements IApuesta {
     async listAll(): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de obtencion de datos", code: 0 };
         try {
-            let query = await ApuestaRepository.listAll();
+            let query = await MovmientoRepository.listAll();
             res.data = query.data;
             res.success = true;
             res.message = "Obtención exitosa";
@@ -45,16 +45,16 @@ class EquipoService implements IApuesta {
         return res;
     }
 
-    async edit(id: string, dto: ApuestaEditDto, authSession: JwtPayload): Promise<MessageResponse> {
+    async edit(id: string, dto: MovimientoDto, authSession: JwtPayload): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de registro", code: 0 };
         try {
-            const userDtoFind = await ApuestaRepository.findById(id) as Apuesta;
+            const userDtoFind = await MovmientoRepository.findById(id) as Movimiento;
             const isActive = userDtoFind?.estado == 'A' || false;
             if (!userDtoFind || !(isActive)) {
                 res.message = "Equipo no encontrado!";
             } else {
-                dto.fechaModificacion = getFecha(new Date());
-                await ApuestaRepository.actualizar(id, dto);
+                // dto.fechaModificacion = getFecha(new Date());
+                await MovmientoRepository.actualizar(id, dto);
                 res.data = dto;
                 res.success = true;
                 res.message = "Equipo actualizado!";
@@ -67,15 +67,15 @@ class EquipoService implements IApuesta {
         return res;
     }
 
-    async create(dto: ApuestaDto, authSession: JwtPayload): Promise<MessageResponse> {
+    async create(dto: MovimientoDto, authSession: JwtPayload): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de registro", code: 0 };
         try {
-            let oEquipo = new Apuesta(dto);
+            let oEquipo = new Movimiento(dto);
             oEquipo.usuarioRegistro = authSession.username;
             oEquipo.fechaRegistro = getFecha(new Date())
-            const oEquipoFind = await ApuestaRepository.findByDto(dto);
+            const oEquipoFind = await MovmientoRepository.findByDto(dto);
             if(!oEquipoFind){
-                oEquipo = await ApuestaRepository.save(oEquipo);
+                oEquipo = await MovmientoRepository.save(oEquipo);
                 res.success = true;
                 res.message = "Equipo registrado";
                 res.data = oEquipo;
@@ -92,9 +92,9 @@ class EquipoService implements IApuesta {
     async desactivar(idUser: string, authSession: JwtPayload): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de eliminación", code: 0 };
         try {
-            const userDtoFind = await ApuestaRepository.findById(idUser);
+            const userDtoFind = await MovmientoRepository.findById(idUser);
             if (userDtoFind) {
-                ApuestaRepository.desactivar(idUser);
+                MovmientoRepository.desactivar(idUser);
                 res.success = true;
                 res.message = "Equipo eliminado";
 
@@ -110,4 +110,4 @@ class EquipoService implements IApuesta {
     }
 }
 
-export default new EquipoService();
+export default new MovimientoService();

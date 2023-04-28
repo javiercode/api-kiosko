@@ -8,7 +8,6 @@ import userRoutes from './routes/user.routes'
 import rolusuarioRoutes from './routes/roluser.routes'
 import rolRoutes from './routes/rol.routes'
 import grupoRoutes from './routes/grupo.routes'
-import equipoRoutes from './routes/equipo.routes'
 import partidoRoutes from './routes/partido.routes'
 import apuestaRoutes from './routes/apuesta.routes'
 
@@ -56,7 +55,6 @@ app.use(process.env.URL_PATH+"",rolRoutes);
 app.use(process.env.URL_PATH+"",userRoutes);
 app.use(process.env.URL_PATH+"",rolusuarioRoutes);
 app.use(process.env.URL_PATH+"",grupoRoutes);
-app.use(process.env.URL_PATH+"",equipoRoutes);
 app.use(process.env.URL_PATH+"",partidoRoutes);
 app.use(process.env.URL_PATH+"",apuestaRoutes);
 

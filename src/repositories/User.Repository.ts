@@ -1,4 +1,4 @@
-import { DeleteResult, EntityRepository,  Like,  ObjectID,  UpdateResult, InsertResult, SaveOptions } from "typeorm";
+import { DeleteResult, EntityRepository,  Like,  UpdateResult, InsertResult, SaveOptions } from "typeorm";
 import { User } from "../entities/User";
 import { UserDto, UserEditDto, UserEditPassDto  } from "../entities/dto/UserDto"
 import { ListPaginate } from "../entities/dto/GeneralDto"

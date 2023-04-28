@@ -1,23 +1,23 @@
 import { Request, response, Response } from "express";
 import { getAuthUser } from '../configs/TokenMiddleware';
-import PartidoService from '../services/Partido.service';
+import ProductoService from '../services/Producto.service';
 import { MessageResponse } from "../entities/dto/GeneralDto";
 import { TypeKeyParamEnum } from "../configs/Config.enum";
 import { validateParams } from "../configs/General.functions";
-import { PartidoDto, PartidoEditDto } from "../entities/dto/PartidoDto";
+import { ProductoDto } from "../entities/dto/ProductoDto";
 
 class PartidoController {
 
     public async test(req: Request, res: Response) {
         const { page, limit } = req.params;
-        const result = await PartidoService.test(getAuthUser(req));
+        const result = await ProductoService.test(getAuthUser(req));
         return res.status(200).send(result);
     }
 
     public async list(req: Request, res: Response) {
         const { page, limit } = req.params;
         let result;
-        result = await PartidoService.listAll();
+        result = await ProductoService.listAll();
         return res.status(200).send(result);
     }
 
@@ -26,23 +26,23 @@ class PartidoController {
         let result = validateParams(fecha,TypeKeyParamEnum.DATE)
         
         if(result.success){
-            result = await PartidoService.findByDate(fecha);
+            result = await ProductoService.findByDate(fecha);
         }
         return res.status(200).send(result);
     }
 
     public async create(req: Request, res: Response) {
-        const userDto = req.body as PartidoDto;
-        const result = await PartidoService.create(userDto, getAuthUser(req));
+        const userDto = req.body as ProductoDto;
+        const result = await ProductoService.create(userDto, getAuthUser(req));
         return res.status(200).send(result);
     }
 
     public async edit(req: Request, res: Response) {
-        const userDto = req.body as PartidoEditDto;
+        const userDto = req.body as ProductoDto;
         let result = validateParams(req.params.id,TypeKeyParamEnum.PK_ORACLE)
         
         if(result.success){
-            result = await PartidoService.edit((req.params.id), userDto, getAuthUser(req));
+            result = await ProductoService.edit((req.params.id), userDto, getAuthUser(req));
         }
         return res.status(200).send(result);
     }
@@ -50,7 +50,7 @@ class PartidoController {
     public async delete(req: Request, res: Response) {
         let result = validateParams(req.params.id,TypeKeyParamEnum.OBJECT_ID)
         if(result.success){
-            result = await PartidoService.desactivar((req.params.id), getAuthUser(req));
+            result = await ProductoService.desactivar((req.params.id), getAuthUser(req));
         }
         return res.status(200).send(result);
     }

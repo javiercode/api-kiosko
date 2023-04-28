@@ -1,13 +1,13 @@
 import { JwtPayload } from '../entities/dto/GeneralDto';
-import { GrupoEditDto, GrupoDto } from '../entities/dto/GrupoDto';
-import { Grupo} from '../entities/Categoria';
+import { CategoriaDto } from '../entities/dto/CategoriaDto';
+import { Categoria} from '../entities/Categoria';
 import GrupoRepository from '../repositories/Grupo.Repository';
 import { MessageResponse } from '../entities/dto/GeneralDto'
 import { getFecha } from '../configs/General.functions';
 import IGrupo from './interfaces/IGrupo.interface';
 
 
-class GrupoService implements IGrupo {
+class CategoriaService implements IGrupo {
 
     async test(authSession: JwtPayload): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de obtencion de datos!", code: 0 };
@@ -32,10 +32,10 @@ class GrupoService implements IGrupo {
         return res;
     }
 
-    async edit(id: string, dto: GrupoEditDto, authSession: JwtPayload): Promise<MessageResponse> {
+    async edit(id: string, dto: CategoriaDto, authSession: JwtPayload): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de registro", code: 0 };
         try {
-            const userDtoFind = await GrupoRepository.findById(id) as Grupo;
+            const userDtoFind = await GrupoRepository.findById(id) as Categoria;
             const isActive = userDtoFind?.estado == 'A' || false;
             if (!userDtoFind || !(isActive)) {
                 res.message = "Grupo no encontrado!";
@@ -43,7 +43,7 @@ class GrupoService implements IGrupo {
                 res.success = true;
                 res.message = "Grupo actualizado!";
 
-                dto.fechaModificacion = getFecha(new Date());
+                // dto.fechaModificacion = getFecha(new Date());
                 const oGrupo = await GrupoRepository.actualizar(id, dto);
                 res.data = dto;
             }
@@ -55,11 +55,11 @@ class GrupoService implements IGrupo {
         return res;
     }
 
-    async create(dto: GrupoDto, authSession: JwtPayload): Promise<MessageResponse> {
+    async create(dto: CategoriaDto, authSession: JwtPayload): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de registro", code: 0 };
         try {
             dto.nombre = dto.nombre.toUpperCase();
-            let oGrupo = new Grupo(dto);
+            let oGrupo = new Categoria(dto);
             oGrupo.usuarioRegistro = authSession.username;
             oGrupo.fechaRegistro = getFecha(new Date())
             const oGrupoFind = await GrupoRepository.findByNombre(dto.nombre);
@@ -99,4 +99,4 @@ class GrupoService implements IGrupo {
     }
 }
 
-export default new GrupoService();
+export default new CategoriaService();

@@ -2,15 +2,15 @@ import { DeleteResult, EntityRepository, Repository, UpdateResult } from "typeor
 import {MysqlDataSource} from "../configs/db";
 import { ListPaginate } from "../entities/dto/GeneralDto"
 import { EstadoEnum } from "../configs/Config.enum"
-import { GrupoDto } from "../entities/dto/GrupoDto";
+import { CategoriaDto } from "../entities/dto/CategoriaDto";
 import { ObjectID } from "mongodb";
-import { Grupo } from "../entities/Categoria";
+import { Categoria } from "../entities/Categoria";
 
 
-class RolRepository {
-    private repository = MysqlDataSource.getRepository(Grupo);
+class CategoriaRepository {
+    private repository = MysqlDataSource.getRepository(Categoria);
 
-    public async  findByDto (params: GrupoDto): Promise<ListPaginate |null>{
+    public async  findByDto (params: CategoriaDto): Promise<ListPaginate |null>{
         let options={}
         options={...params}
         const [result,total] = await this.repository.findAndCount(options);
@@ -21,7 +21,7 @@ class RolRepository {
         }
     };
 
-    public async  findById (params: string): Promise<Grupo | null>{    
+    public async  findById (params: string): Promise<Categoria | null>{    
         let options={}
         options = {
             where: {
@@ -32,7 +32,7 @@ class RolRepository {
         return result
     };
 
-    public async findByNombre (params: string): Promise<Grupo | null>{    
+    public async findByNombre (params: string): Promise<Categoria | null>{    
         let options={}
         options = {
             where: {
@@ -43,7 +43,7 @@ class RolRepository {
         return result
     };
 
-    public async  findByINId (params: string[]): Promise<Grupo[]>{    
+    public async  findByINId (params: string[]): Promise<Categoria[]>{    
         let options={}
         options={
             where: {
@@ -60,12 +60,12 @@ class RolRepository {
         return firstUser;
     };
     
-    public async  actualizar (id:string, param: GrupoDto){
+    public async  actualizar (id:string, param: CategoriaDto){
         const firstUser = await this.repository.update(id,param);
         return firstUser;
     };
     
-    public async  delete (params: Grupo): Promise<DeleteResult>{
+    public async  delete (params: Categoria): Promise<DeleteResult>{
         let options={}
         options={params}
         const firstUser = await this.repository.delete(options);
@@ -86,10 +86,10 @@ class RolRepository {
         }
     };
 
-    public async save(params: Grupo): Promise<Grupo> {
+    public async save(params: Categoria): Promise<Categoria> {
         const oRol = await this.repository.save(params);
         return oRol;
     };
 
 }
-export default new RolRepository();
+export default new CategoriaRepository();

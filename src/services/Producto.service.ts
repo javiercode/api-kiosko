@@ -1,13 +1,13 @@
 import { JwtPayload } from '../entities/dto/GeneralDto';
-import { PartidoEditDto, PartidoDto } from '../entities/dto/PartidoDto';
+import { ProductoDto } from '../entities/dto/ProductoDto';
 import { Producto} from '../entities/Producto';
-import PartidoRepository from '../repositories/Partido.Repository';
+import ProductoRepository from '../repositories/Producto.Repository';
 import { MessageResponse } from '../entities/dto/GeneralDto'
 import { getFecha } from '../configs/General.functions';
-import IPartido from './interfaces/IPartido.interface';
+import IProducto from './interfaces/IPartido.interface';
 
 
-class PartidoService implements IPartido {
+class ProductoService implements IProducto {
 
     async test(authSession: JwtPayload): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de obtencion de datos!", code: 0 };
@@ -18,7 +18,7 @@ class PartidoService implements IPartido {
     async listAll(): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de obtencion de datos", code: 0 };
         try {
-            let query = await PartidoRepository.listAll();
+            let query = await ProductoRepository.listAll();
             res.data = query.data;
             res.success = true;
             res.message = "Obtención exitosa";
@@ -35,7 +35,7 @@ class PartidoService implements IPartido {
     async findByDate(fecha:string): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de obtencion de datos", code: 0 };
         try {
-            const data = await PartidoRepository.findByDate(getFecha(fecha));
+            const data = await ProductoRepository.findByDate(getFecha(fecha));
             res.data = data;
             res.success = true;
             res.message = "Obtención exitosa";
@@ -48,10 +48,10 @@ class PartidoService implements IPartido {
         return res;
     }
 
-    async edit(id: string, dto: PartidoEditDto, authSession: JwtPayload): Promise<MessageResponse> {
+    async edit(id: string, dto: ProductoDto, authSession: JwtPayload): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de registro", code: 0 };
         try {
-            const userDtoFind = await PartidoRepository.findById(id) as Producto;
+            const userDtoFind = await ProductoRepository.findById(id) as Producto;
             const isActive = userDtoFind?.estado == 'A' || false;
             if (!userDtoFind || !(isActive)) {
                 res.message = "Partido no encontrado!";
@@ -59,8 +59,8 @@ class PartidoService implements IPartido {
                 res.success = true;
                 res.message = "Partido actualizado!";
 
-                dto.fechaModificacion = getFecha(new Date());
-                await PartidoRepository.actualizar(id, dto);
+                // dto.fechaModificacion = getFecha(new Date());
+                await ProductoRepository.actualizar(id, dto);
                 res.data = dto;
             }
         } catch (error) {
@@ -71,17 +71,16 @@ class PartidoService implements IPartido {
         return res;
     }
 
-    async create(dto: PartidoDto, authSession: JwtPayload): Promise<MessageResponse> {
+    async create(dto: ProductoDto, authSession: JwtPayload): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de registro", code: 0 };
         try {
             let oPartido = new Producto(dto);
             oPartido.usuarioRegistro = authSession.username;
             oPartido.fechaRegistro = getFecha(new Date())
-            oPartido.fecha = getFecha(dto.fecha)
-            const oPartidoFind = await PartidoRepository.findByDto(oPartido);
+            const oPartidoFind = await ProductoRepository.findByDto(oPartido);
 
             if(!oPartidoFind){
-                oPartido = await PartidoRepository.save(oPartido);
+                oPartido = await ProductoRepository.save(oPartido);
                 res.success = true;
                 res.message = "Partido registrado";
                 res.data = oPartido;
@@ -98,9 +97,9 @@ class PartidoService implements IPartido {
     async desactivar(idUser: string, authSession: JwtPayload): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de eliminación", code: 0 };
         try {
-            const userDtoFind = await PartidoRepository.findById(idUser);
+            const userDtoFind = await ProductoRepository.findById(idUser);
             if (userDtoFind) {
-                PartidoRepository.desactivar(idUser);
+                ProductoRepository.desactivar(idUser);
                 res.success = true;
                 res.message = "Partido eliminado";
 
@@ -116,4 +115,4 @@ class PartidoService implements IPartido {
     }
 }
 
-export default new PartidoService();
+export default new ProductoService();

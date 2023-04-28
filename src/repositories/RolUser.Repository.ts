@@ -6,7 +6,7 @@ import { ListPaginate } from "../entities/dto/GeneralDto"
 import { ObjectID } from "mongodb";
 import { EstadoEnum } from "../configs/Config.enum";
 import UserRepository from "./User.Repository";
-import { Grupo } from "../entities/Categoria";
+import { Categoria } from "../entities/Categoria";
 
 
 class RolUserRepository {
@@ -82,7 +82,7 @@ class RolUserRepository {
          return query;
      };
 
-    public async  findGrupoByUser (params:string): Promise<Grupo[]>{
+    public async  findGrupoByUser (params:string): Promise<Categoria[]>{
         const rolUsers = await this.repository
             .createQueryBuilder("RolUser")
             //.createQueryBuilder("user")

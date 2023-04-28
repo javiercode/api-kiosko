@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import controller from '../controllers/apuesta.controller';
+import controller from '../controllers/movimiento.controller';
 
 const router = Router();
 

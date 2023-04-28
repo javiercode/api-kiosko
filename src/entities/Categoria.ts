@@ -1,25 +1,16 @@
 import {Column, Entity, PrimaryColumn, CreateDateColumn, OneToOne, JoinColumn,ManyToOne, BaseEntity, Index, PrimaryGeneratedColumn } from 'typeorm';
-import { GrupoDto } from './dto/GrupoDto';
+import { CategoriaDto } from './dto/CategoriaDto';
 import { EstadoEnum } from '../configs/Config.enum';
 
-@Entity('grupo')
-export class Grupo{
+@Entity('categoria')
+export class Categoria{
     
     @PrimaryGeneratedColumn({name:"ID"})
-    public id: number
-
-    @Column({name:"COD_PARTIDO"})
-    codPartido:number;
+    id: number
 
     @Column({name:"NOMBRE",length:200})
     @Index({ unique: true })
     nombre:string
-
-    @Column({name:"PRIVACIDAD",length:1})
-    privacidad:string
-
-    @Column({name:"CLAVE",length:200})
-    clave:string
 
     @Column({name:"TIPO",length:1})
     tipo:string
@@ -39,11 +30,9 @@ export class Grupo{
     @Column({name:"USUARIO_MODIFICACION", length:50,nullable:true})
     usuarioModificacion:string
     
-    constructor(params: GrupoDto = {} as GrupoDto){
+    constructor(params: CategoriaDto = {} as CategoriaDto){
         this.nombre=params.nombre;
-        this.privacidad=params.privacidad;
         this.tipo=params.tipo;
-        this.clave=params.clave;
         this.estado = this.estado || EstadoEnum.ACTIVO;
     }
 }
