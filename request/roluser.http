@@ -1,0 +1,65 @@
+@api = http://localhost:4000/apuesta/api/v1
+# @api = http://192.168.27.141:9091
+#@api = http://192.168.27.141:4000/micliente/api/v3
+
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InhhdmllcmNvZGUiLCJhY3Rpdm8iOnRydWUsImlhdCI6MTY2OTU1NjUxNywiZXhwIjoxNjY5NTk5NzE3fQ.7CPaAhfzt5owGTAEJAbrHVvF33R4zVKUXKI602upE6g
+
+### Login
+POST {{api}}/login
+Content-Type: application/json
+
+{
+    "username":"xaviercode",
+    "password":"123456"
+}
+
+
+### test RolUser
+GET {{api}}/roluser/test
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### list RolUser
+GET {{api}}/roluser/list/xaviercode
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+
+### Create RolUser
+POST {{api}}/roluser/create
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "rol":"ORG",
+    "grupo":"TEST",
+    "usuario":"xaviercode"
+}
+
+### Create RolUser ADM
+POST {{api}}/roluser/create
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "rol":"ADM",
+    "grupo":"",
+    "usuario":"xaviercode"
+}
+
+### Edit RolUser
+PUT {{api}}/roluser/edit/635ca32b86063e346860dad4
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "codigo":"ADM",
+    "descripcion":"Administrador",
+    "jerarquia":1
+}
+
+
+### Delete Rol
+DELETE {{api}}/roluser/delete/635ca32b86063e346860dad4
+Content-Type: application/json
+Authorization: Bearer {{token}}
