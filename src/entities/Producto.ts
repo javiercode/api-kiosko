@@ -1,6 +1,7 @@
-import {Column, Entity, PrimaryColumn, CreateDateColumn, OneToOne, JoinColumn,ManyToOne, BaseEntity, Index, PrimaryGeneratedColumn } from 'typeorm';
+import {Column, Entity, PrimaryColumn, CreateDateColumn, OneToOne, JoinColumn,ManyToOne, BaseEntity, Index, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { ProductoDto } from './dto/ProductoDto';
 import { EstadoEnum } from '../configs/Config.enum';
+import { Movimiento } from './Movimiento';
 
 @Entity('producto')
 export class Producto{
@@ -31,6 +32,9 @@ export class Producto{
 
     @Column({name:"USUARIO_MODIFICACION", length:50,nullable:true})
     usuarioModificacion:string
+
+    @OneToMany(() => Movimiento, (movimiento) => movimiento.producto)
+    movimientos: Movimiento[]
 
     constructor(params: ProductoDto = {} as ProductoDto){
         this.nombre= (params.nombre);

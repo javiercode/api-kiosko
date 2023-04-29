@@ -9,7 +9,7 @@ import rolusuarioRoutes from './routes/roluser.routes'
 import rolRoutes from './routes/rol.routes'
 import grupoRoutes from './routes/grupo.routes'
 import partidoRoutes from './routes/partido.routes'
-import apuestaRoutes from './routes/apuesta.routes'
+import apuestaRoutes from './routes/movimiento.routes'
 
 import Helmet from 'helmet';
 import rateLimit from 'express-rate-limit'

@@ -80,7 +80,11 @@ class MovmientoRepository {
                 estado:EstadoEnum.ACTIVO,
             }
         }
-        const [result,total] = await this.repository.findAndCount(options);        
+        const total = await this.repository.count(options);        
+        const result = await this.repository.createQueryBuilder("mov")
+            .innerJoin("mov.producto","p")
+            .getMany();
+        // const [result,total] = await this.repository.findAndCount(options);        
         return {
             data: result,
             count: total

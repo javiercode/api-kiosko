@@ -70,12 +70,10 @@ class RolUserRepository {
 
      public async  findDetalleByUser (params: string): Promise<SessionDto[]>{
          const query:SessionDto[] = await this.repository.manager.query(`
-            select ru.id, r.codigo as rol, u.correo, g.nombre as grupo, g.tipo, 
-                g.privacidad, g.COD_PARTIDO as codPartido,u.username
+            select ru.id, r.codigo as rol, u.correo, u.username
             from rol_user ru inner join user u on ru.COD_USUARIO = u.ID
             inner join rol r on ru.COD_ROL = r.ID 
-            inner join grupo g on ru.COD_GRUPO = g.ID 
-            where ru.ESTADO !='${EstadoEnum.ELIMINADO}' and r.ESTADO !='${EstadoEnum.ELIMINADO}' and u.ESTADO !='${EstadoEnum.ELIMINADO}' and g.ESTADO !='${EstadoEnum.ELIMINADO}' 
+            where ru.ESTADO !='${EstadoEnum.ELIMINADO}' and r.ESTADO !='${EstadoEnum.ELIMINADO}' and u.ESTADO !='${EstadoEnum.ELIMINADO}' 
             and u.USERNAME = '${params}';
             `);
         

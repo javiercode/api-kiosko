@@ -1,6 +1,6 @@
 import { Request, response, Response } from "express";
 import { getAuthUser } from '../configs/TokenMiddleware';
-import ApuestaService from '../services/Movimiento.service';
+import MovimientoService from '../services/Movimiento.service';
 import { MessageResponse } from "../entities/dto/GeneralDto";
 import { TypeKeyParamEnum } from "../configs/Config.enum";
 import { validateParams } from "../configs/General.functions";
@@ -10,14 +10,14 @@ class MovimientoController {
 
     public async test(req: Request, res: Response) {
         const { page, limit } = req.params;
-        const result = await ApuestaService.test(getAuthUser(req));
+        const result = await MovimientoService.test(getAuthUser(req));
         return res.status(200).send(result);
     }
 
     public async list(req: Request, res: Response) {
         const { page, limit } = req.params;
         let result;
-        result = await ApuestaService.listAll();
+        result = await MovimientoService.listAll();
         return res.status(200).send(result);
     }
 
@@ -25,7 +25,7 @@ class MovimientoController {
         const dto = req.body as MovimientoDto;
         let result = validate(dto);
         if(result.success){
-            result = await ApuestaService.create(dto, getAuthUser(req));
+            result = await MovimientoService.create(dto, getAuthUser(req));
         }
         return res.status(200).send(result);
     }
@@ -35,7 +35,7 @@ class MovimientoController {
         let result = validateParams(req.params.id,TypeKeyParamEnum.OBJECT_ID)
         
         if(result.success){
-            result = await ApuestaService.edit((req.params.id), dto, getAuthUser(req));
+            result = await MovimientoService.edit((req.params.id), dto, getAuthUser(req));
         }
         return res.status(200).send(result);
     }
@@ -43,7 +43,7 @@ class MovimientoController {
     public async delete(req: Request, res: Response) {
         let result = validateParams(req.params.id,TypeKeyParamEnum.OBJECT_ID)
         if(result.success){
-            result = await ApuestaService.desactivar((req.params.id), getAuthUser(req));
+            result = await MovimientoService.desactivar((req.params.id), getAuthUser(req));
         }
         return res.status(200).send(result);
     }

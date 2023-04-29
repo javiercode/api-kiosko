@@ -37,9 +37,7 @@ class MovimientoService implements IApuesta {
             res.message = "Obtención exitosa";
             res.total = query.count || 0;
         } catch (error) {
-            if (error instanceof TypeError) {
-                console.error(error);
-            }
+            console.error(error);
         }
 
         return res;

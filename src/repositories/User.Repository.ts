@@ -30,7 +30,10 @@ class UserRepository{
             "username":username,
             "password":password,
         }
-        const firstUser = await this.repository.findOneBy(options);
+        const firstUser = await this.repository.createQueryBuilder("u")
+        .where("u.username=:username",{username:username})
+        .andWhere("u.password=:password",{password:password})
+        .getOne();
         return firstUser;
     };
 
