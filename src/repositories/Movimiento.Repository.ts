@@ -3,7 +3,6 @@ import {MysqlDataSource} from "../configs/db";
 import { ListPaginate } from "../entities/dto/GeneralDto"
 import { EstadoEnum } from "../configs/Config.enum"
 import { MovimientoDto } from "../entities/dto/MovimientoDto";
-import { ObjectID } from "mongodb";
 import { Movimiento } from "../entities/Movimiento";
 
 
@@ -25,7 +24,7 @@ class MovmientoRepository {
         let options={}
         options = {
             where: {
-                _id: new ObjectID(params)
+                _id: params
             },
         };
         const result = await this.repository.findOne(options);

@@ -4,7 +4,6 @@ import { ListPaginate } from "../entities/dto/GeneralDto"
 import { EstadoEnum } from "../configs/Config.enum"
 import { Rol } from "../entities/Rol";
 import { RolDto } from "../entities/dto/RolDto";
-import { ObjectID } from "mongodb";
 
 
 class RolRepository {
@@ -34,7 +33,7 @@ class RolRepository {
         let options={}
         options = {
             where: {
-                _id: new ObjectID(params)
+                _id: params
             },
         };
         

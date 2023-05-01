@@ -15,6 +15,9 @@ export class Producto{
     @Column({name:"COD_CATEGORIA"})
     codCategoria: number
 
+    @Column({name:"CODIGO"})
+    codigo: string
+
     @Column({name:"MARCA"})
     marca: string
 
@@ -39,6 +42,7 @@ export class Producto{
     constructor(params: ProductoDto = {} as ProductoDto){
         this.nombre= (params.nombre);
         this.codCategoria= (params.codCategoria);
+        this.codigo= (params.codigo);
         this.marca= params.marca;
         this.estado = this.estado || EstadoEnum.ACTIVO;
     }

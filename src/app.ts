@@ -7,8 +7,8 @@ import loginRoutes from './routes/login.routes'
 import userRoutes from './routes/user.routes'
 import rolusuarioRoutes from './routes/roluser.routes'
 import rolRoutes from './routes/rol.routes'
-import grupoRoutes from './routes/grupo.routes'
-import partidoRoutes from './routes/partido.routes'
+import grupoRoutes from './routes/categoria.routes'
+import partidoRoutes from './routes/producto.routes'
 import apuestaRoutes from './routes/movimiento.routes'
 
 import Helmet from 'helmet';

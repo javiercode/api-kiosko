@@ -3,7 +3,6 @@ import {MysqlDataSource} from "../configs/db";
 import { ListPaginate } from "../entities/dto/GeneralDto"
 import { EstadoEnum } from "../configs/Config.enum"
 import { CategoriaDto } from "../entities/dto/CategoriaDto";
-import { ObjectID } from "mongodb";
 import { Categoria } from "../entities/Categoria";
 
 
@@ -25,7 +24,7 @@ class CategoriaRepository {
         let options={}
         options = {
             where: {
-                _id: new ObjectID(params)
+                _id: (params)
             },
         };
         const result = await this.repository.findOne(options);

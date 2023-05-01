@@ -3,7 +3,6 @@ import { RolUser } from "../entities/RolUser";
 import { SessionDto, RolUserDto } from "../entities/dto/RolUserDto"
 import {MysqlDataSource} from "../configs/db";
 import { ListPaginate } from "../entities/dto/GeneralDto"
-import { ObjectID } from "mongodb";
 import { EstadoEnum } from "../configs/Config.enum";
 import UserRepository from "./User.Repository";
 import { Categoria } from "../entities/Categoria";
@@ -60,7 +59,7 @@ class RolUserRepository {
         let options={}
         options = {
             where: {
-                _id: new ObjectID(params)
+                _id: params
             },
         };
         const result = await this.repository.findOne(options);

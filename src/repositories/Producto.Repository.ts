@@ -3,7 +3,6 @@ import {MysqlDataSource} from "../configs/db";
 import { ListPaginate } from "../entities/dto/GeneralDto"
 import { EstadoEnum } from "../configs/Config.enum"
 import { ProductoDto } from "../entities/dto/ProductoDto";
-import { ObjectID } from "mongodb";
 import { Producto } from "../entities/Producto";
 import { getFecha } from "../configs/General.functions";
 
@@ -25,11 +24,11 @@ class ProductoRepository {
         return result;
     };
 
-    public async  findById (params: string): Promise<Producto | null>{    
+    public async  findById (params: number): Promise<Producto | null>{    
         let options={}
         options = {
             where: {
-                _id: new ObjectID(params)
+                _id: params
             },
         };
         const result = await this.repository.findOne(options);

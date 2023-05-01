@@ -5,12 +5,25 @@ import ProductoRepository from '../repositories/Producto.Repository';
 import { MessageResponse } from '../entities/dto/GeneralDto'
 import { getFecha } from '../configs/General.functions';
 import IProducto from './interfaces/IPartido.interface';
-
+import QRCode from 'qrcode'
 
 class ProductoService implements IProducto {
 
     async test(authSession: JwtPayload): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de obtencion de datos!", code: 0 };
+        return res;
+    }
+
+    async getQR(id: number): Promise<MessageResponse> {
+        const res: MessageResponse = { success: false, message: "Error de obtencion de datos!", code: 0 };
+        try {
+            const dtoFind = await ProductoRepository.findById(id) as Producto;
+            if(dtoFind){
+                res.data=await QRCode.toDataURL("hola");
+            }
+        } catch (error) {
+            console.error(error)
+        }
         return res;
     }
 
