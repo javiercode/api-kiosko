@@ -14,7 +14,8 @@ export interface MessageResponse {
     message: string,
     code: number,
     data?:any,
-    total?:number
+    total?:number,
+    suma?:number,
 }
 
 export interface LoginResponce {
@@ -26,4 +27,10 @@ export interface LoginResponce {
 export interface ListPaginate {
     data: any[],
     count: number
+}
+
+export interface DataPaginate {
+    data: any[],
+    count: number,
+    sum?: number
 }

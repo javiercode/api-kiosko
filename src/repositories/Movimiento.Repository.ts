@@ -1,6 +1,6 @@
 import { DeleteResult, EntityRepository, Repository, UpdateResult } from "typeorm";
 import {MysqlDataSource} from "../configs/db";
-import { ListPaginate } from "../entities/dto/GeneralDto"
+import { DataPaginate, ListPaginate } from "../entities/dto/GeneralDto"
 import { EstadoEnum } from "../configs/Config.enum"
 import { MovimientoDto } from "../entities/dto/MovimientoDto";
 import { Movimiento } from "../entities/Movimiento";
@@ -72,21 +72,31 @@ class MovmientoRepository {
     };
 
 
-    public async  listAll (): Promise<ListPaginate>{
+    public async  listAll (page:number,limit:number): Promise<DataPaginate>{
         let options={}
         options={
             where:{
                 estado:EstadoEnum.ACTIVO,
             }
         }
-        const total = await this.repository.count(options);        
+        const { sum, count } = await this.repository
+            .createQueryBuilder("mov")
+            .select("SUM(mov.descuento)", "sum")
+            .addSelect("COUNT(mov.descuento)", "count")
+            .where("mov.estado = :estado", { estado: EstadoEnum.ACTIVO })
+            .getRawOne(); 
+
         const result = await this.repository.createQueryBuilder("mov")
-            .innerJoin("mov.producto","p")
-            .getMany();
-        // const [result,total] = await this.repository.findAndCount(options);        
+            .innerJoinAndSelect("mov.producto","p")
+            .where("mov.estado=:estado",{estado:EstadoEnum.ACTIVO})
+            .skip(page*limit)
+            .take(limit)
+            .orderBy("mov.id","DESC")
+            .getMany();      
         return {
             data: result,
-            count: total
+            count: count,
+            sum:sum?sum:0
         }
     };
 

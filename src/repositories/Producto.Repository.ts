@@ -31,7 +31,7 @@ class ProductoRepository {
                 _id: params
             },
         };
-        const result = await this.repository.findOne(options);
+        const result = await this.repository.findOneById(params);
         return result
     };
 
@@ -40,6 +40,17 @@ class ProductoRepository {
         options = {
             where: {
                 nombre: params
+            },
+        };
+        const result = await this.repository.findOne(options);
+        return result
+    };
+
+    public async findByCodigo (params: string): Promise<Producto | null>{    
+        let options={}
+        options = {
+            where: {
+                codigo: params
             },
         };
         const result = await this.repository.findOne(options);
@@ -58,12 +69,12 @@ class ProductoRepository {
         return result
     };
     
-    public async  desactivar (id: string){
+    public async  desactivar (id: number){
         const firstUser = await this.repository.update(id,{estado: EstadoEnum.ELIMINADO});
         return firstUser;
     };
     
-    public async  actualizar (id:string, param: ProductoDto){
+    public async  actualizar (id:number, param: ProductoDto){
         const firstUser = await this.repository.update(id,param);
         return firstUser;
     };
@@ -76,17 +87,23 @@ class ProductoRepository {
     };
 
 
-    public async  listAll (): Promise<ListPaginate>{
+    public async  listAll (page:number, limit:number): Promise<ListPaginate>{
         let options={}
         options={
             where:{
                 estado:EstadoEnum.ACTIVO,
             }
         }
-        const [result,total] = await this.repository.findAndCount(options);        
+        const [result,count] = await this.repository.createQueryBuilder("prod")
+        // .innerJoinAndSelect("mov.producto","p")
+        .where("prod.estado=:estado",{estado:EstadoEnum.ACTIVO})
+        .skip(page*limit)
+        .take(limit)
+        .orderBy("prod.nombre","ASC")
+        .getManyAndCount();
         return {
             data: result,
-            count: total
+            count: count
         }
     };
 

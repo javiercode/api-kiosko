@@ -21,6 +21,12 @@ export class Producto{
     @Column({name:"MARCA"})
     marca: string
 
+    @Column({name:"MONTO",precision:10,scale:2,type:'numeric'})
+    monto: number
+    
+    @Column({name:"DESCUENTO",precision:10,scale:2,type:'numeric'})
+    descuento:number
+
     @Column({name:"ESTADO",default: EstadoEnum.ACTIVO,length:1})
     estado:string
 
@@ -42,6 +48,7 @@ export class Producto{
     constructor(params: ProductoDto = {} as ProductoDto){
         this.nombre= (params.nombre);
         this.codCategoria= (params.codCategoria);
+        this.monto= (params.monto);
         this.codigo= (params.codigo);
         this.marca= params.marca;
         this.estado = this.estado || EstadoEnum.ACTIVO;

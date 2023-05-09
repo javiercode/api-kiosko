@@ -17,7 +17,7 @@ class MovimientoController {
     public async list(req: Request, res: Response) {
         const { page, limit } = req.params;
         let result;
-        result = await MovimientoService.listAll();
+        result = await MovimientoService.listAll(Number.parseInt(page),Number.parseInt(limit));
         return res.status(200).send(result);
     }
 

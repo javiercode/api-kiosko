@@ -15,8 +15,11 @@ export class Movimiento{
     @Column({name:"FECHA"})
     fecha:Date
 
-    @Column({name:"MONTO"})
+    @Column({name:"MONTO",precision:10,scale:2,type:'numeric'})
     monto:number
+
+    @Column({name:"DESCUENTO",precision:10,scale:2,type:'numeric'})
+    descuento:number
 
     @Column({name:"ESTADO",default: EstadoEnum.ACTIVO, length:1})
     estado:string
@@ -39,8 +42,6 @@ export class Movimiento{
     
     constructor(params: MovimientoDto = {} as MovimientoDto){
         this.codProducto = (params.codProducto);
-        this.fecha = (params.fecha);
-        this.monto = params.monto;
         this.estado = this.estado || EstadoEnum.ACTIVO;
     }
 }

@@ -19,7 +19,35 @@ class ProductoService implements IProducto {
         try {
             const dtoFind = await ProductoRepository.findById(id) as Producto;
             if(dtoFind){
-                res.data=await QRCode.toDataURL("hola");
+                res.message="Restulado exitoso";
+                res.data=await QRCode.toDataURL(dtoFind.codigo);
+            }
+        } catch (error) {
+            console.error(error)
+        }
+        return res;
+    }
+
+    async getCodigo(codigo: string): Promise<MessageResponse> {
+        const res: MessageResponse = { success: false, message: "Error de obtencion de datos!", code: 0 };
+        try {
+            const dtoFind = await ProductoRepository.findByCodigo(codigo) as Producto;
+            if(dtoFind){
+                res.data=dtoFind;
+                res.message="Restulado exitoso";
+            }
+        } catch (error) {
+            console.error(error)
+        }
+        return res;
+    }
+
+    async getQRImg(id: number): Promise<MessageResponse> {
+        const res: MessageResponse = { success: false, message: "Error de obtencion de datos!", code: 0 };
+        try {
+            const dtoFind = await ProductoRepository.findById(id) as Producto;
+            if(dtoFind){
+                res.data=await QRCode.toBuffer(dtoFind.codigo);
             }
         } catch (error) {
             console.error(error)
@@ -28,18 +56,16 @@ class ProductoService implements IProducto {
     }
 
 
-    async listAll(): Promise<MessageResponse> {
+    async listAll(page:number, limit:number): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de obtencion de datos", code: 0 };
         try {
-            let query = await ProductoRepository.listAll();
+            let query = await ProductoRepository.listAll(page,limit);
             res.data = query.data;
             res.success = true;
             res.message = "Obtención exitosa";
             res.total = query.count || 0;
         } catch (error) {
-            if (error instanceof TypeError) {
-                console.error(error);
-            }
+            console.error(error);
         }
 
         return res;
@@ -61,7 +87,7 @@ class ProductoService implements IProducto {
         return res;
     }
 
-    async edit(id: string, dto: ProductoDto, authSession: JwtPayload): Promise<MessageResponse> {
+    async edit(id: number, dto: ProductoDto, authSession: JwtPayload): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de registro", code: 0 };
         try {
             const userDtoFind = await ProductoRepository.findById(id) as Producto;
@@ -107,7 +133,7 @@ class ProductoService implements IProducto {
         return res;
     }
 
-    async desactivar(idUser: string, authSession: JwtPayload): Promise<MessageResponse> {
+    async desactivar(idUser: number, authSession: JwtPayload): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de eliminación", code: 0 };
         try {
             const userDtoFind = await ProductoRepository.findById(idUser);

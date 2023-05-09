@@ -1,7 +1,7 @@
 @api = http://localhost:4000/kiosko/api/v1
 # @api = http://192.168.27.141:9091
 #@api = http://192.168.27.141:4000/micliente/api/v3
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InhhdmllciIsImFjdGl2byI6dHJ1ZSwiaWF0IjoxNjgyODIwNDIwLCJleHAiOjE2ODI4NjM2MjB9.JXy3f7VJjmCNWpriJ289hkdZxaaOPDPQ7HtVT0fJmaI
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InhhdmllciIsImFjdGl2byI6dHJ1ZSwiaWF0IjoxNjgzNjU5NTUzLCJleHAiOjE2ODM3MDI3NTN9.Mc4P00_qfOXlr43X11ONDiA7OkouN-dtngTy-pt5d48
 
 ### Login
 POST {{api}}/login
@@ -18,19 +18,30 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 ### list
-GET {{api}}/movimiento/list
+GET {{api}}/movimiento/list/0/5
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### list
+GET {{api}}/producto/list/0/5
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 
 ### Create
-POST {{api}}/create
+POST {{api}}/movimiento/create
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "nombre":"Qatar"
+    "codigoProducto":"PIL-1"
 }
+
+
+### getQRImg
+GET {{api}}/producto/qr-img/2
+Content-Type: application/json
+Authorization: Bearer {{token}}
 
 ### Edit
 PUT {{api}}/rol/edit/635ca32b86063e346860dad4

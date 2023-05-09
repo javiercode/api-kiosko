@@ -7,11 +7,12 @@ import { getFecha } from '../configs/General.functions';
 import IApuesta from './interfaces/IApuesta.interface';
 import fs from 'fs';
 import QRCode from 'qrcode'
+import ProductoRepository from '../repositories/Producto.Repository';
 
 class MovimientoService implements IApuesta {
 
     async test(authSession: JwtPayload): Promise<MessageResponse> {
-        console.log("__dirname", __dirname);
+        // console.log("__dirname", __dirname);
         try {
             console.log(await QRCode.toDataURL("hola"))
           } catch (err) {
@@ -23,14 +24,15 @@ class MovimientoService implements IApuesta {
     }
 
 
-    async listAll(): Promise<MessageResponse> {
+    async listAll(page:number,limit:number): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de obtencion de datos", code: 0 };
         try {
-            let query = await MovmientoRepository.listAll();
+            let query = await MovmientoRepository.listAll(page,limit);
             res.data = query.data;
             res.success = true;
             res.message = "Obtención exitosa";
             res.total = query.count || 0;
+            res.suma = query.sum || 0;
         } catch (error) {
             console.error(error);
         }
@@ -63,17 +65,20 @@ class MovimientoService implements IApuesta {
     async create(dto: MovimientoDto, authSession: JwtPayload): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de registro", code: 0 };
         try {
-            let oEquipo = new Movimiento(dto);
-            oEquipo.usuarioRegistro = authSession.username;
-            oEquipo.fechaRegistro = getFecha(new Date())
-            const oEquipoFind = await MovmientoRepository.findByDto(dto);
-            if(!oEquipoFind){
-                oEquipo = await MovmientoRepository.save(oEquipo);
+            let oMovimiento = new Movimiento(dto);
+            oMovimiento.usuarioRegistro = authSession.username;
+            oMovimiento.fecha = getFecha(new Date())
+            let options
+            const oProducto = await ProductoRepository.findByCodigo(dto.codigoProducto);
+            if(oProducto){
+                oMovimiento.monto = oProducto.monto;
+                oMovimiento.codProducto = oProducto.id;
+                oMovimiento = await MovmientoRepository.save(oMovimiento);
                 res.success = true;
-                res.message = "Equipo registrado";
-                res.data = oEquipo;
+                res.message = "Movimiento registrado";
+                res.data = oMovimiento;
             }else{
-                res.message = "Nombre de Equipo duplicado";
+                res.message = "El producto no existe";
             }
             
         } catch (error) {
