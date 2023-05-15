@@ -4,7 +4,7 @@ import { RolUserDto } from '../entities/dto/RolUserDto';
 import { RolUser } from '../entities/RolUser';
 import RolUserRepository from '../repositories/RolUser.Repository';
 import RolRepository from '../repositories/Rol.Repository';
-import GrupoRepository from '../repositories/Grupo.Repository';
+import GrupoRepository from '../repositories/Categoria.Repository';
 import UserRepository from '../repositories/User.Repository';
 import { MessageResponse } from '../entities/dto/GeneralDto'
 import { RolesEnum } from '../configs/Config.enum';

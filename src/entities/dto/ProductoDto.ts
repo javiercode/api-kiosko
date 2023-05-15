@@ -3,5 +3,5 @@ export interface ProductoDto {
     codCategoria: number,
     monto: number,
     codigo: string,
-    marca: string,
+    codMarca: number,
 }

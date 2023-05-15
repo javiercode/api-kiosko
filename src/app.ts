@@ -9,7 +9,8 @@ import rolusuarioRoutes from './routes/roluser.routes'
 import rolRoutes from './routes/rol.routes'
 import grupoRoutes from './routes/categoria.routes'
 import partidoRoutes from './routes/producto.routes'
-import apuestaRoutes from './routes/movimiento.routes'
+import movimientoRoutes from './routes/movimiento.routes'
+import marcaRoutes from './routes/marca.routes'
 
 import Helmet from 'helmet';
 import rateLimit from 'express-rate-limit'
@@ -56,6 +57,7 @@ app.use(process.env.URL_PATH+"",userRoutes);
 app.use(process.env.URL_PATH+"",rolusuarioRoutes);
 app.use(process.env.URL_PATH+"",grupoRoutes);
 app.use(process.env.URL_PATH+"",partidoRoutes);
-app.use(process.env.URL_PATH+"",apuestaRoutes);
+app.use(process.env.URL_PATH+"",movimientoRoutes);
+app.use(process.env.URL_PATH+"",marcaRoutes);
 
 export default app;

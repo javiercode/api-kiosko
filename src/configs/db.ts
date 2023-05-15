@@ -5,6 +5,7 @@ import { Producto } from "../entities/Producto";
 import { Rol } from "../entities/Rol";
 import { RolUser } from "../entities/RolUser";
 import { User } from "../entities/User";
+import { Marca } from "../entities/Marca";
 
 export const MysqlDataSource = new DataSource({
     // "type": "mysql",
@@ -38,6 +39,6 @@ export const MysqlDataSource = new DataSource({
     //  },
     entities: [
         // "./src/entities/*.ts"
-        Movimiento,Categoria,Producto,Rol,RolUser,User,
+        Movimiento,Categoria,Producto,Rol,RolUser,User,Marca
     ]
 })

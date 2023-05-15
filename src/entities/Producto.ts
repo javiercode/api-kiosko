@@ -15,11 +15,11 @@ export class Producto{
     @Column({name:"COD_CATEGORIA"})
     codCategoria: number
 
+    @Column({name:"COD_MARCA"})
+    codMarca: number
+
     @Column({name:"CODIGO"})
     codigo: string
-
-    @Column({name:"MARCA"})
-    marca: string
 
     @Column({name:"MONTO",precision:10,scale:2,type:'numeric'})
     monto: number
@@ -50,7 +50,7 @@ export class Producto{
         this.codCategoria= (params.codCategoria);
         this.monto= (params.monto);
         this.codigo= (params.codigo);
-        this.marca= params.marca;
+        this.codMarca= params.codMarca;
         this.estado = this.estado || EstadoEnum.ACTIVO;
     }
 }

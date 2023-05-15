@@ -2,14 +2,15 @@ import { DeleteResult, EntityRepository, Repository, UpdateResult } from "typeor
 import {MysqlDataSource} from "../configs/db";
 import { ListPaginate } from "../entities/dto/GeneralDto"
 import { EstadoEnum } from "../configs/Config.enum"
-import { CategoriaDto } from "../entities/dto/CategoriaDto";
+import { MarcaDto } from "../entities/dto/MarcaDto";
 import { Categoria } from "../entities/Categoria";
+import { Marca } from "../entities/Marca";
 
 
 class CategoriaRepository {
-    private repository = MysqlDataSource.getRepository(Categoria);
+    private repository = MysqlDataSource.getRepository(Marca);
 
-    public async  findByDto (params: CategoriaDto): Promise<ListPaginate |null>{
+    public async  findByDto (params: MarcaDto): Promise<ListPaginate |null>{
         let options={}
         options={...params}
         const [result,total] = await this.repository.findAndCount(options);
@@ -59,7 +60,7 @@ class CategoriaRepository {
         return firstUser;
     };
     
-    public async  actualizar (id:string, param: CategoriaDto){
+    public async  actualizar (id:string, param: MarcaDto){
         const firstUser = await this.repository.update(id,param);
         return firstUser;
     };
@@ -71,12 +72,14 @@ class CategoriaRepository {
         return firstUser;
     };
 
-    public async  listAll (): Promise<ListPaginate>{
+    public async  listAll (page:number, limit:number): Promise<ListPaginate>{
         let options={}
         options={
             where:{
                 estado:EstadoEnum.ACTIVO,
-            }
+            },
+            take:limit,
+            skip:limit*page,
         }
         const [result,total] = await this.repository.findAndCount(options);        
         return {

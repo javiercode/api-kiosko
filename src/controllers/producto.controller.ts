@@ -45,16 +45,6 @@ class ProductoController {
         return res.status(200).send(result);
     }
 
-    public async findFecha(req: Request, res: Response) {
-        const fecha = req.body.fecha;
-        let result = validateParams(fecha,TypeKeyParamEnum.DATE)
-        
-        if(result.success){
-            result = await ProductoService.findByDate(fecha);
-        }
-        return res.status(200).send(result);
-    }
-
     public async create(req: Request, res: Response) {
         const userDto = req.body as ProductoDto;
         const result = await ProductoService.create(userDto, getAuthUser(req));

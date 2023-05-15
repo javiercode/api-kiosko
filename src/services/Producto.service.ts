@@ -71,21 +71,6 @@ class ProductoService implements IProducto {
         return res;
     }
 
-    async findByDate(fecha:string): Promise<MessageResponse> {
-        const res: MessageResponse = { success: false, message: "Error de obtencion de datos", code: 0 };
-        try {
-            const data = await ProductoRepository.findByDate(getFecha(fecha));
-            res.data = data;
-            res.success = true;
-            res.message = "Obtención exitosa";
-        } catch (error) {
-            if (error instanceof TypeError) {
-                console.error(error);
-            }
-        }
-
-        return res;
-    }
 
     async edit(id: number, dto: ProductoDto, authSession: JwtPayload): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de registro", code: 0 };

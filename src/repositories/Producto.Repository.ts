@@ -14,7 +14,7 @@ class ProductoRepository {
         options={
             where: {
                 codCategoria: params.codCategoria,
-                marca: params.marca,
+                marca: params.codMarca,
                 nombre:params.nombre,
                 estado: EstadoEnum.ACTIVO
             },
@@ -123,35 +123,6 @@ class ProductoRepository {
             data: result,
             count: total
         }
-    };
-
-    public async  findByDate (fecha:Date): Promise<Producto[]>{
-        var startDate = getFecha(fecha);
-        startDate.setHours(0, 0, 0, 0);
-        var endDate = getFecha(fecha);
-        endDate.setHours(23, 59, 59, 999);
-
-        const rolUsers = await this.repository
-            .createQueryBuilder("Partido")
-            .leftJoinAndSelect("Partido.local", "local")
-            .leftJoinAndSelect("Partido.visitante", "visitante")
-            .where("Partido.fecha >= :startDate", { startDate: startDate })
-            .andWhere("Partido.fecha <= :endDate", { endDate: endDate })
-            .getMany();
-        return rolUsers;
-    };
-
-    public async findMoreDate (fecha:Date): Promise<Producto[]>{
-        var startDate = getFecha(fecha);
-        startDate.setHours(0, 0, 0, 0);
-
-        const rolUsers = await this.repository
-            .createQueryBuilder("Partido")
-            .leftJoinAndSelect("Partido.local", "local")
-            .leftJoinAndSelect("Partido.visitante", "visitante")
-            .where("Partido.fecha >= :startDate", { startDate: startDate })
-            .getMany();
-        return rolUsers;
     };
 
     public async save(params: Producto): Promise<Producto> {
