@@ -17,7 +17,7 @@ export const MysqlDataSource = new DataSource({
     // database: process.env.MYSQLDB,
     synchronize: false,
     logging: false,
-    url:'mysql://u33ruzlc3cu969f1owkc:pscale_pw_HczwlazLpizUlT3Hg6V3hNecfUmOVVr4SQV1Qf6w4le@aws.connect.psdb.cloud/kiosko?ssl={"rejectUnauthorized":true}',
+    url:process.env.MYSQLDB_URL,
     // ssl:false,
     extra: {
          ssl: {
