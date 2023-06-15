@@ -65,14 +65,15 @@ class MovimientoService implements IApuesta {
     async create(dto: MovimientoDto, authSession: JwtPayload): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de registro", code: 0 };
         try {
+            const oProducto2 = await ProductoRepository.findByCodigo(dto.codigoProducto);
             let oMovimiento = new Movimiento(dto);
             oMovimiento.usuarioRegistro = authSession.username;
             oMovimiento.fecha = getFecha(new Date())
-            let options
             const oProducto = await ProductoRepository.findByCodigo(dto.codigoProducto);
-            if(oProducto){
+            if(oProducto!=undefined){
                 oMovimiento.monto = oProducto.monto;
                 oMovimiento.codProducto = oProducto.id;
+                oMovimiento.descuento = oProducto.descuento;
                 oMovimiento = await MovmientoRepository.save(oMovimiento);
                 res.success = true;
                 res.message = "Movimiento registrado";
@@ -82,6 +83,37 @@ class MovimientoService implements IApuesta {
             }
             
         } catch (error) {
+            console.error(error);
+        }
+        return res;
+    }
+
+    async createAll(dtoList: MovimientoDto[], authSession: JwtPayload): Promise<MessageResponse> {
+        const res: MessageResponse = { success: true, message: "Movimiento registrado", code: 0 };
+        try {
+            
+            dtoList.forEach(async(dto) => {  
+                // const oProducto2 = await ProductoRepository.findByCodigo(dto.codigoProducto);
+                let oMovimiento = new Movimiento(dto);
+                oMovimiento.usuarioRegistro = authSession.username;
+                oMovimiento.fecha = getFecha(new Date())
+                const oProducto = await ProductoRepository.findByCodigo(dto.codigoProducto);
+                if(oProducto!=undefined){
+                    oMovimiento.monto = oProducto.monto;
+                    oMovimiento.codProducto = oProducto.id;
+                    oMovimiento.descuento = oProducto.descuento;
+                    oMovimiento = await MovmientoRepository.save(oMovimiento);
+                   
+                    
+                }else{
+                    res.message = `El producto ${dto.codigoProducto} no existe`;
+                }
+            });
+            res.data = dtoList;
+            
+        } catch (error) {
+            res.success = false;
+            res.message = "Error de registro";
             console.error(error);
         }
         return res;

@@ -85,6 +85,27 @@ class AuthService implements IAuth {
         return result;
     }
 
+    async verifyEmail(email: string): Promise<MessageResponse> {
+        let result: MessageResponse = {
+            code: 200,
+            success: false,
+            message: 'Error al validar la sesión',
+        }
+        try {
+            const verify= await UserRepository.findByCorreo(email);
+            result.success = (verify ==undefined);
+            result.message = result.success? "Correo disponbile":"El correo ya esta registrado";
+            if(result.success){
+                result.data= verify;
+            }
+        } catch (error:any) {
+            if(error.response && error.response.status && error.response.status==401){
+                result.message = "El correo es inválido"
+            }
+        }        
+        return result;
+    }
+
     encrypt(password: string): string {
         let salt = process.env.PASS_SALT + "";
         let hash = crypto.pbkdf2Sync(password, salt,

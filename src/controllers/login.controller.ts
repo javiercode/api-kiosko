@@ -21,6 +21,15 @@ class LoginController {
         return res.status(200).send(result);
     }
 
+    public async verifyEmail (req: Request, res:Response){
+        const {email} = req.body;
+        // let result = validateParams(email,TypeKeyParamEnum.USER)
+        // if(result.success){
+            let result = await AuthService.verifyEmail(email);
+        // }
+        return res.status(200).send(result);
+    }
+
     public logout (req: Request, res:Response){
         res.send('Hola Logout')
     }

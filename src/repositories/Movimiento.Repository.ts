@@ -82,11 +82,12 @@ class MovmientoRepository {
         const { sum, count } = await this.repository
             .createQueryBuilder("mov")
             .select("SUM(mov.descuento)", "sum")
-            .addSelect("COUNT(mov.descuento)", "count")
+            .addSelect("COUNT(mov.id)", "count")
             .where("mov.estado = :estado", { estado: EstadoEnum.ACTIVO })
-            .getRawOne(); 
+            .getRawOne();
+        // const suma =this.repository.sum(options);
 
-        const result = await this.repository.createQueryBuilder("mov")
+        const restult = await this.repository.createQueryBuilder("mov")
             .innerJoinAndSelect("mov.producto","p")
             .where("mov.estado=:estado",{estado:EstadoEnum.ACTIVO})
             .skip(page*limit)
@@ -94,7 +95,7 @@ class MovmientoRepository {
             .orderBy("mov.id","DESC")
             .getMany();      
         return {
-            data: result,
+            data: restult,
             count: count,
             sum:sum?sum:0
         }

@@ -1,6 +1,6 @@
 export interface MovimientoDto {
-    codProducto:number,
     codigoProducto:string,
+    codProducto?:number,
     usuarioRegistro?: string,
     fechaRegistro?: Date,
 }

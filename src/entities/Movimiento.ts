@@ -41,7 +41,9 @@ export class Movimiento{
     producto: Producto
     
     constructor(params: MovimientoDto = {} as MovimientoDto){
-        this.codProducto = (params.codProducto);
+        if(params.codProducto){
+            this.codProducto = params.codProducto
+        }
         this.estado = this.estado || EstadoEnum.ACTIVO;
     }
 }

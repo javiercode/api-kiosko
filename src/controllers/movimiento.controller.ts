@@ -30,6 +30,24 @@ class MovimientoController {
         return res.status(200).send(result);
     }
 
+    public async createAll(req: Request, res: Response) {
+        const dtoList = req.body.data as MovimientoDto[];
+        
+        console.log("dtoList",dtoList)
+        let isValid = true;
+        dtoList.forEach(dto => {
+            if(!validate(dto)){
+                isValid=false;
+            }  
+        });
+        console.log("isValid",isValid)
+        let result: MessageResponse = { success: false, message: "Error de registro", code: 0 };
+        if(isValid){
+            result = await MovimientoService.createAll(dtoList, getAuthUser(req));
+        }
+        return res.status(200).send(result);
+    }
+
     public async edit(req: Request, res: Response) {
         const dto = req.body as MovimientoDto;
         let result = validateParams(req.params.id,TypeKeyParamEnum.OBJECT_ID)
