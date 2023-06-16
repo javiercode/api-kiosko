@@ -65,7 +65,7 @@ class MovimientoService implements IApuesta {
     }
 
     async create(dto: MovimientoDto, authSession: JwtPayload): Promise<MessageResponse> {
-        const res: MessageResponse = { success: false, message: "Error de registro", code: 0 };
+        const res: MessageResponse = { success: false, message: "Registro exitoso", code: 0 };
         try {
             const aProductoQR = dto.codigoProducto.split("|");
             const oProductoQR = await ProductoQRRepository.findById(Number.parseInt(aProductoQR[0]));
