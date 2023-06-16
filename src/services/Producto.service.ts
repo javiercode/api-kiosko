@@ -106,10 +106,10 @@ class ProductoService implements IProducto {
             if(!oPartidoFind){
                 oPartido = await ProductoRepository.save(oPartido);
                 res.success = true;
-                res.message = "Partido registrado";
+                res.message = "Producto registrado";
                 res.data = oPartido;
             }else{
-                res.message = "Partido duplicado";
+                res.message = "Producto duplicado";
             }
             
         } catch (error) {

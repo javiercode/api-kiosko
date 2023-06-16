@@ -11,7 +11,7 @@ export const TokenMiddleware = (req: Request, res: Response, next: NextFunction)
     if (req.originalUrl.toString().includes("/login") || req.originalUrl.toString().includes("/usuario/create")) {
         next()
     } else {
-        if (req.originalUrl.toString().includes("/login") || aToken?.length == 2) {
+        if (req.originalUrl.toString().includes("/usuario/create") || req.originalUrl.toString().includes("/login") || aToken?.length == 2) {
             const token: string = authHeader?.split(' ')[1] || '';
             const decodeToken = getAuthUser(req)
 

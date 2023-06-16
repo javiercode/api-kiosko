@@ -49,6 +49,7 @@ export class Producto{
         this.nombre= (params.nombre);
         this.codCategoria= (params.codCategoria);
         this.monto= (params.monto);
+        this.descuento= (params.descuento);
         this.codigo= (params.codigo);
         this.codMarca= params.codMarca;
         this.estado = this.estado || EstadoEnum.ACTIVO;
