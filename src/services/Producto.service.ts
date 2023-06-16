@@ -33,7 +33,8 @@ class ProductoService implements IProducto {
     async getCodigo(codigo: string): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de obtencion de datos!", code: 0 };
         try {
-            const dtoFind = await ProductoRepository.findByCodigo(codigo) as Producto;
+            const aProductoQR = codigo.split("|");
+            const dtoFind = await ProductoRepository.findByCodigo(aProductoQR[1]) as Producto;
             if(dtoFind){
                 res.data=dtoFind;
                 res.message="Restulado exitoso";
