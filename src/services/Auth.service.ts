@@ -112,6 +112,7 @@ class AuthService implements IAuth {
             300, 64, `sha512`).toString(`hex`);
         return hash;
     }
+    
 }
 
 export default new AuthService();

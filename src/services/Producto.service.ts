@@ -2,10 +2,12 @@ import { JwtPayload } from '../entities/dto/GeneralDto';
 import { ProductoDto } from '../entities/dto/ProductoDto';
 import { Producto} from '../entities/Producto';
 import ProductoRepository from '../repositories/Producto.Repository';
+import ProductoQRRepository from '../repositories/ProductoQR.Repository';
 import { MessageResponse } from '../entities/dto/GeneralDto'
 import { getFecha } from '../configs/General.functions';
 import IProducto from './interfaces/IPartido.interface';
 import QRCode from 'qrcode'
+import { ProductoQR } from '../entities/ProductoQR';
 
 class ProductoService implements IProducto {
 
@@ -42,12 +44,14 @@ class ProductoService implements IProducto {
         return res;
     }
 
-    async getQRImg(id: number): Promise<MessageResponse> {
+    async getQRImg(id: number,authSession: JwtPayload): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de obtencion de datos!", code: 0 };
         try {
             const dtoFind = await ProductoRepository.findById(id) as Producto;
+            const productoQR:ProductoQR = new ProductoQR({codigo:dtoFind.codigo,codProducto:dtoFind.id,usuarioRegistro:authSession.username})
+            const oProductoQR = await ProductoQRRepository.save(productoQR);
             if(dtoFind){
-                res.data=await QRCode.toBuffer(dtoFind.codigo);
+                res.data=await QRCode.toBuffer(oProductoQR.id.toString()+"|"+oProductoQR.codigo);
             }
         } catch (error) {
             console.error(error)

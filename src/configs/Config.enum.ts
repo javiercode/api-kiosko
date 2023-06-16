@@ -6,8 +6,8 @@ enum RolesEnum {
 
 enum EstadoEnum {
     ACTIVO = 'A',
-    PENDIENTE = 'P',
     ELIMINADO = 'D',
+    PROCESADO = 'P',
 }
 
 enum TipoGrupoEnum {
