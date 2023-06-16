@@ -20,7 +20,7 @@ export class RolUser {
     @Column({name:"COD_GRUPO"})
     codGrupo:number;
     
-    @Column({name:"ESTADO",default: EstadoEnum.PENDIENTE,length:1})
+    @Column({name:"ESTADO",default: EstadoEnum.ACTIVO,length:1})
     estado:string
 
     @CreateDateColumn({name:"FECHA_REGISTRO"})

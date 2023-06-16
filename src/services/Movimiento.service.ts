@@ -1,6 +1,6 @@
 import { JwtPayload } from '../entities/dto/GeneralDto';
 import { MovimientoDto } from '../entities/dto/MovimientoDto';
-import { Movimiento} from '../entities/Movimiento';
+import { Movimiento } from '../entities/Movimiento';
 import MovmientoRepository from '../repositories/Movimiento.Repository';
 import { MessageResponse } from '../entities/dto/GeneralDto'
 import { getFecha } from '../configs/General.functions';
@@ -8,6 +8,8 @@ import IApuesta from './interfaces/IApuesta.interface';
 import fs from 'fs';
 import QRCode from 'qrcode'
 import ProductoRepository from '../repositories/Producto.Repository';
+import ProductoQRRepository from '../repositories/ProductoQR.Repository';
+import { EstadoEnum } from '../configs/Config.enum';
 
 class MovimientoService implements IApuesta {
 
@@ -15,19 +17,19 @@ class MovimientoService implements IApuesta {
         // console.log("__dirname", __dirname);
         try {
             console.log(await QRCode.toDataURL("hola"))
-          } catch (err) {
-        console.error(err)
+        } catch (err) {
+            console.error(err)
         }
-        
+
         const res: MessageResponse = { success: false, message: "Error de obtencion de datos!", code: 0 };
         return res;
     }
 
 
-    async listAll(page:number,limit:number): Promise<MessageResponse> {
+    async listAll(page: number, limit: number): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de obtencion de datos", code: 0 };
         try {
-            let query = await MovmientoRepository.listAll(page,limit);
+            let query = await MovmientoRepository.listAll(page, limit);
             res.data = query.data;
             res.success = true;
             res.message = "Obtención exitosa";
@@ -65,23 +67,32 @@ class MovimientoService implements IApuesta {
     async create(dto: MovimientoDto, authSession: JwtPayload): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de registro", code: 0 };
         try {
-            const oProducto2 = await ProductoRepository.findByCodigo(dto.codigoProducto);
+            const aProductoQR = dto.codigoProducto.split("|");
+            const oProductoQR = await ProductoQRRepository.findById(Number.parseInt(aProductoQR[0]));
             let oMovimiento = new Movimiento(dto);
             oMovimiento.usuarioRegistro = authSession.username;
             oMovimiento.fecha = getFecha(new Date())
-            const oProducto = await ProductoRepository.findByCodigo(dto.codigoProducto);
-            if(oProducto!=undefined){
-                oMovimiento.monto = oProducto.monto;
-                oMovimiento.codProducto = oProducto.id;
-                oMovimiento.descuento = oProducto.descuento;
-                oMovimiento = await MovmientoRepository.save(oMovimiento);
-                res.success = true;
-                res.message = "Movimiento registrado";
-                res.data = oMovimiento;
-            }else{
-                res.message = "El producto no existe";
+            if (oProductoQR != undefined && oProductoQR.estado == EstadoEnum.ACTIVO) {
+                const oProducto = await ProductoRepository.findById(oProductoQR?.codProducto);
+
+                if (oProducto != undefined) {
+                    oMovimiento.monto = oProducto.monto;
+                    oMovimiento.codProducto = oProducto.id;
+                    oMovimiento.descuento = oProducto.descuento;
+                    oMovimiento = await MovmientoRepository.save(oMovimiento);
+
+                    oProductoQR.estado = EstadoEnum.PROCESADO;
+                    ProductoQRRepository.actualizar(oProductoQR.id, oProductoQR)
+                    res.success = true;
+                    res.message = "Movimiento registrado";
+                    res.data = oMovimiento;
+                } else {
+                    res.message = "El producto no existe";
+                }
+            } else {
+                res.message = "El producto ya fue utilizado";
             }
-            
+
         } catch (error) {
             console.error(error);
         }
@@ -91,26 +102,32 @@ class MovimientoService implements IApuesta {
     async createAll(dtoList: MovimientoDto[], authSession: JwtPayload): Promise<MessageResponse> {
         const res: MessageResponse = { success: true, message: "Movimiento registrado", code: 0 };
         try {
-            
-            dtoList.forEach(async(dto) => {  
-                // const oProducto2 = await ProductoRepository.findByCodigo(dto.codigoProducto);
+            let contador = 0;
+            dtoList.forEach(async (dto) => {
+                const aProductoQR = dto.codigoProducto.split("|");
+                const oProductoQR = await ProductoQRRepository.findById(Number.parseInt(aProductoQR[0]));
+
                 let oMovimiento = new Movimiento(dto);
                 oMovimiento.usuarioRegistro = authSession.username;
                 oMovimiento.fecha = getFecha(new Date())
                 const oProducto = await ProductoRepository.findByCodigo(dto.codigoProducto);
-                if(oProducto!=undefined){
-                    oMovimiento.monto = oProducto.monto;
-                    oMovimiento.codProducto = oProducto.id;
-                    oMovimiento.descuento = oProducto.descuento;
-                    oMovimiento = await MovmientoRepository.save(oMovimiento);
-                   
-                    
-                }else{
-                    res.message = `El producto ${dto.codigoProducto} no existe`;
+                if (oProductoQR != undefined && oProductoQR.estado == EstadoEnum.ACTIVO) {
+                    if (oProducto != undefined) {
+                        oMovimiento.monto = oProducto.monto;
+                        oMovimiento.codProducto = oProducto.id;
+                        oMovimiento.descuento = oProducto.descuento;
+                        oMovimiento = await MovmientoRepository.save(oMovimiento);
+
+                        oProductoQR.estado = EstadoEnum.PROCESADO;
+                        ProductoQRRepository.actualizar(oProductoQR.id, oProductoQR);
+                        contador++;
+                    }
                 }
+                res.message = `Se registraron ${contador} producto(s)`;
+
             });
             res.data = dtoList;
-            
+
         } catch (error) {
             res.success = false;
             res.message = "Error de registro";

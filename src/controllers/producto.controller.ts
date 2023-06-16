@@ -28,7 +28,7 @@ class ProductoController {
 
     public async qrImg(req: Request, res: Response) {
         const { id } = req.params;
-        const result = await ProductoService.getQRImg(Number.parseInt(id));
+        const result = await ProductoService.getQRImg(Number.parseInt(id), getAuthUser(req));
         // res.setHeader('content-type', 'application/jpg');
         res.contentType('image/jpeg');
         // res.end()
