@@ -1,6 +1,6 @@
 import { DeleteResult, EntityRepository, Repository, UpdateResult } from "typeorm";
 import {MysqlDataSource} from "../configs/db";
-import { DataPaginate, ListPaginate } from "../entities/dto/GeneralDto"
+import { DataPaginate, JwtPayload, ListPaginate } from "../entities/dto/GeneralDto"
 import { EstadoEnum } from "../configs/Config.enum"
 import { MovimientoDto } from "../entities/dto/MovimientoDto";
 import { Movimiento } from "../entities/Movimiento";
@@ -72,7 +72,7 @@ class MovmientoRepository {
     };
 
 
-    public async  listAll (page:number,limit:number): Promise<DataPaginate>{
+    public async  listAll (page:number,limit:number,authSession: JwtPayload): Promise<DataPaginate>{
         let options={}
         options={
             where:{
@@ -84,12 +84,13 @@ class MovmientoRepository {
             .select("SUM(mov.descuento)", "sum")
             .addSelect("COUNT(mov.id)", "count")
             .where("mov.estado = :estado", { estado: EstadoEnum.ACTIVO })
+            .andWhere("mov.usuarioRegistro = :usuarioRegistro", { usuarioRegistro: authSession.username })
             .getRawOne();
-        // const suma =this.repository.sum(options);
 
         const restult = await this.repository.createQueryBuilder("mov")
             .innerJoinAndSelect("mov.producto","p")
             .where("mov.estado=:estado",{estado:EstadoEnum.ACTIVO})
+            .andWhere("mov.usuarioRegistro = :usuarioRegistro", { usuarioRegistro: authSession.username })
             .skip(page*limit)
             .take(limit)
             .orderBy("mov.id","DESC")

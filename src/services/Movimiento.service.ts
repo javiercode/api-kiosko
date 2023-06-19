@@ -26,10 +26,10 @@ class MovimientoService implements IApuesta {
     }
 
 
-    async listAll(page: number, limit: number): Promise<MessageResponse> {
+    async listAll(page: number, limit: number,authSession: JwtPayload): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de obtencion de datos", code: 0 };
         try {
-            let query = await MovmientoRepository.listAll(page, limit);
+            let query = await MovmientoRepository.listAll(page, limit,authSession);
             res.data = query.data;
             res.success = true;
             res.message = "Obtención exitosa";
