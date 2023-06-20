@@ -18,6 +18,9 @@ export class Producto{
     @Column({name:"COD_MARCA"})
     codMarca: number
 
+    @Column({name:"MARCA"})
+    marca: string
+
     @Column({name:"CODIGO"})
     codigo: string
 
@@ -47,11 +50,13 @@ export class Producto{
 
     constructor(params: ProductoDto = {} as ProductoDto){
         this.nombre= (params.nombre);
-        this.codCategoria= (params.codCategoria);
+        this.codCategoria= (params.codCategoria)||1;
         this.monto= (params.monto);
-        this.descuento= (params.descuento);
-        this.codigo= (params.codigo);
-        this.codMarca= params.codMarca;
+        this.descuento= ((params.monto)*0.035);
+        this.descuento = Number.parseFloat(this.descuento.toFixed(2));
+        this.codigo= "";
+        this.marca= params.marca?.toUpperCase();
+        this.codMarca= params.codMarca ||1;
         this.estado = this.estado || EstadoEnum.ACTIVO;
     }
 }

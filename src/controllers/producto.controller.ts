@@ -46,8 +46,8 @@ class ProductoController {
     }
 
     public async create(req: Request, res: Response) {
-        const userDto = req.body as ProductoDto;
-        const result = await ProductoService.create(userDto, getAuthUser(req));
+        const dto = req.body as ProductoDto;
+        const result = await ProductoService.create(dto, getAuthUser(req));
         return res.status(200).send(result);
     }
 

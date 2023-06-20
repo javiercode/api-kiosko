@@ -103,16 +103,18 @@ class ProductoService implements IProducto {
     async create(dto: ProductoDto, authSession: JwtPayload): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de registro", code: 0 };
         try {
-            let oPartido = new Producto(dto);
-            oPartido.usuarioRegistro = authSession.username;
-            oPartido.fechaRegistro = getFecha(new Date())
-            const oPartidoFind = await ProductoRepository.findByDto(oPartido);
+            let oProducto = new Producto(dto);
+            oProducto.usuarioRegistro = authSession.username;
+            oProducto.fechaRegistro = getFecha(new Date())
+            const oPartidoFind = await ProductoRepository.findByDto(oProducto);
 
             if(!oPartidoFind){
-                oPartido = await ProductoRepository.save(oPartido);
+                oProducto = await ProductoRepository.save(oProducto);
+                oProducto.codigo = oProducto.marca+"-"+oProducto.id;
+                oProducto = await ProductoRepository.save(oProducto);
                 res.success = true;
                 res.message = "Producto registrado";
-                res.data = oPartido;
+                res.data = oProducto;
             }else{
                 res.message = "Producto duplicado";
             }
