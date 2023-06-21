@@ -1,14 +1,14 @@
 @api = http://localhost:4000/kiosko/api/v1
 # @api = http://192.168.27.141:9091
 #@api = http://192.168.27.141:4000/micliente/api/v3
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InhhdmllciIsImFjdGl2byI6dHJ1ZSwiaWF0IjoxNjgyODIwNDIwLCJleHAiOjE2ODI4NjM2MjB9.JXy3f7VJjmCNWpriJ289hkdZxaaOPDPQ7HtVT0fJmaI
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhhcnZ5IiwiYWN0aXZvIjp0cnVlLCJpYXQiOjE2ODcyODMzOTQsImV4cCI6MTY4NzMyNjU5NH0.He-B758IQ5CzGL7mzhSKgpgpBH3ATZPXQlIpQl0S-ag
 
 ### Login
-POST {{api}}
+POST {{api}}/login
 Content-Type: application/json
 
 {
-    "username":"xaviercode",
+    "username":"harvy",
     "password":"123456"
 }
 
@@ -17,14 +17,21 @@ GET {{api}}/list
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
+### list
+GET {{api}}/producto/
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
 
 ### Create
-POST {{api}}/create
+POST {{api}}/producto/create
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "nombre":"QATAR"
+    "nombre": "Leche Pil Chocolate de 900 ml",
+    "monto": 12,
+    "marca": "PIL"
 }
 
 ### Edit
