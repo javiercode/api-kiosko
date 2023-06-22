@@ -30,7 +30,7 @@ class UserService implements IUser {
         return res;
     }
 
-    async updatePassword(id: string, password: string): Promise<MessageResponse> {
+    async updatePassword(id: number, password: string): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de registro", code: 0 };
         try {
             const userDtoFind = await UserRepository.findByIdActive(id);
@@ -55,7 +55,7 @@ class UserService implements IUser {
         return res;
     }
 
-    async edit(id: string, userEditDto: UserEditDto): Promise<MessageResponse> {
+    async edit(id: number, userEditDto: UserEditDto): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de registro", code: 0 };
         try {
             const userDtoFind = await UserRepository.findByIdActive(id);
@@ -125,7 +125,7 @@ class UserService implements IUser {
         return query;
     }
 
-    async desactivar(idUser: string): Promise<MessageResponse> {
+    async desactivar(idUser: number): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de eliminación", code: 0 };
         try {
             const userDtoFind = await UserRepository.findById(idUser);
@@ -146,6 +146,27 @@ class UserService implements IUser {
         return res;
     }
 
+    async updateFoto(id:number, fotoB64: string, authSession: JwtPayload): Promise<MessageResponse> {
+        const res: MessageResponse = { success: false, message: "Error de registro", code: 0 };
+        try {
+            //var b64string = /* whatever */;
+            const oUser = await UserRepository.findById(id);
+            if (!oUser) {
+                res.message = "Usuario duplicado en registro!";
+            } else {
+                var buf = Buffer.from(fotoB64, 'base64'); // Ta-da
+                oUser.fechaModificacion = getFecha(new Date());
+                    const oUserUpdate = await UserRepository.actualizar(id,oUser)
+                    res.success = true;
+                    res.message = "Foto de perfil acgualizada";
+                    res.data = oUserUpdate;                
+            }
+        } catch (error) {
+            res.message = "Error de registro!";
+            console.error(error);
+        }
+        return res;
+    }  
 }
 
 export default new UserService();

@@ -21,6 +21,9 @@ export class User{
     @Column({name:"COD_FACEBOOK",length:300})
     codFacebook:string
 
+    @Column({name:"FOTO_PERFIL"})
+    fotoPerfil:string
+
     @Column({name:"PASSWORD",length:300})
     password:string
 
