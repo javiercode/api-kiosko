@@ -63,7 +63,7 @@ class UserRepository{
         }
     };
 
-    public async findByIdActive(params: string): Promise<User | null> {
+    public async findByIdActive(params: number): Promise<User | null> {
         let options={}
         options = {
             where: {
@@ -75,17 +75,17 @@ class UserRepository{
         return firstUser;
     };
 
-    public async findById(params: string): Promise<User | null> {
+    public async findById(params: number): Promise<User | null> {
         const firstUser = await this.repository.findOneById(params);
         return firstUser;
     };
 
-    public async desactivar(userId: string): Promise<UpdateResult> {
+    public async desactivar(userId: number): Promise<UpdateResult> {
         const firstUser = await this.repository.update(userId, { estado: 'D' });
         return firstUser;
     };
 
-    public async actualizar(userId: string, param: UserEditDto|UserEditPassDto): Promise<UpdateResult> {
+    public async actualizar(userId: number, param: UserEditDto|UserEditPassDto|User): Promise<UpdateResult> {
         const firstUser = await this.repository.update(userId, param);
         return firstUser;
     };

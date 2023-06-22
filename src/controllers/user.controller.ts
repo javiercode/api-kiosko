@@ -4,6 +4,7 @@ import { UserDto, UserEditDto, UserRegex } from '../entities/dto/UserDto';
 import { getFecha, validateParams } from "../configs/General.functions";
 import { TypeKeyParamEnum } from "../configs/Config.enum";
 import { MessageResponse } from "../entities/dto/GeneralDto";
+import { getAuthUser } from "../configs/TokenMiddleware";
 
 
 class UserController {
@@ -39,7 +40,7 @@ class UserController {
         const userDto = req.body as UserEditDto;
         let result = validate(toIFormValidateCreate(userDto));
         if (result.success) {
-            result = await UserService.edit(req.params.id,userDto);
+            result = await UserService.edit(Number.parseInt(req.params.id),userDto);
         }
         return res.status(200).send(result);
     }
@@ -47,7 +48,16 @@ class UserController {
     public async desactivar(req: Request, res: Response): Promise<Response> {
         let result = validateParams(req.params.id, TypeKeyParamEnum.OBJECT_ID)
         if (result.success) {
-            result = await UserService.desactivar(req.params.id);
+            result = await UserService.desactivar(Number.parseInt(req.params.id));
+        }
+        return res.status(200).send(result);
+    }
+
+    public async updateFoto(req: Request, res: Response): Promise<Response> {
+        const fotoB64 = req.body.data as string;
+        let result = validateParams(req.params.id, TypeKeyParamEnum.OBJECT_ID)
+        if (result.success) {
+            result = await UserService.updateFoto(Number.parseInt(req.params.id),fotoB64,getAuthUser(req));
         }
         return res.status(200).send(result);
     }
