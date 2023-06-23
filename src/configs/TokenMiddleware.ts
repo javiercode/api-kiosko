@@ -8,7 +8,7 @@ import jwt from 'jsonwebtoken';
 export const TokenMiddleware = (req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.get('Authorization');
     const aToken = authHeader?.split(' ');
-    if (req.originalUrl.toString().includes("/login") || req.originalUrl.toString().includes("/usuario/create")) {
+    if (req.originalUrl.toString().includes("/usuario/getFoto") || req.originalUrl.toString().includes("/login") || req.originalUrl.toString().includes("/usuario/create")) {
         next()
     } else {
         if (req.originalUrl.toString().includes("/usuario/create") || req.originalUrl.toString().includes("/login") || aToken?.length == 2) {
