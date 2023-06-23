@@ -8,7 +8,7 @@ router.post('/usuario/create',UserController.create);
 router.put('/usuario/edit/:id',UserController.edit);
 router.delete('/usuario/delete/:id',UserController.desactivar);
 router.use(express.urlencoded({extended:true}));
-router.post('/usuario/updateFoto/:id',UserController.updateFoto);
+router.post('/usuario/updateFoto/:username',UserController.updateFoto);
 router.get('/usuario/getFoto/:username',UserController.obtenerFoto);
 
 export default router;

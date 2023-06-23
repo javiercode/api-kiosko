@@ -171,11 +171,11 @@ class UserService implements IUser {
         return res;
     }  
 
-    async updateFoto(id:number, fotoB64: string, authSession: JwtPayload): Promise<MessageResponse> {
+    async updateFoto(username:string, fotoB64: string, authSession: JwtPayload): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de registro", code: 0 };
         try {
             //var b64string = /* whatever */;
-            const oUser = await UserRepository.findById(id);
+            const oUser = await UserRepository.findByUsername(username);
             if (!oUser) {
                 res.message = "El usuario no existe!";
             } else {
@@ -187,7 +187,7 @@ class UserService implements IUser {
                     oUser.fechaModificacion = getFecha(new Date());
                     oUser.usuarioModificacion = authSession.username;
                     oUser.fotoPerfil = buf;
-                    const oUserUpdate = await UserRepository.actualizar(id,oUser)
+                    const oUserUpdate = await UserRepository.actualizar(oUser.id,oUser)
                     res.success = true;
                     res.message = "Foto de perfil actualizada!";
                 }else{
