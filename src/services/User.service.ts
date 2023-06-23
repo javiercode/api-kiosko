@@ -151,13 +151,18 @@ class UserService implements IUser {
         try {
             //var b64string = /* whatever */;
             const oUser = await UserRepository.findByUsername(username);
-            if (!oUser) {
-                res.message = "El usuario no existe!";
-            } else {
+            if (oUser) {
                 res.success = true;
                 res.message = "Obtención exitosa!";
-                // @ts-ignore
-                res.data = oUser.fotoPerfil.toString('base64');
+                if(oUser.fotoPerfil!=undefined){
+                    // @ts-ignore
+                    res.data = oUser.fotoPerfil.toString('base64');
+                }else{
+                    res.data = "";
+                }
+            } else {
+                res.message = "El usuario no existe!";
+                
             }
         } catch (error) {
             res.message = "Error de registro!";
