@@ -53,11 +53,12 @@ app.use(TokenMiddleware);
 
 app.use(process.env.URL_PATH+"",loginRoutes);
 app.use(process.env.URL_PATH+"",rolRoutes);
-app.use(process.env.URL_PATH+"",userRoutes);
 app.use(process.env.URL_PATH+"",rolusuarioRoutes);
 app.use(process.env.URL_PATH+"",grupoRoutes);
 app.use(process.env.URL_PATH+"",partidoRoutes);
 app.use(process.env.URL_PATH+"",movimientoRoutes);
 app.use(process.env.URL_PATH+"",marcaRoutes);
+
+app.use(process.env.URL_PATH+"",userRoutes);
 
 export default app;

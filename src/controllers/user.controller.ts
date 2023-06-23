@@ -55,9 +55,16 @@ class UserController {
 
     public async updateFoto(req: Request, res: Response): Promise<Response> {
         const fotoB64 = req.body.data as string;
-        let result = validateParams(req.params.id, TypeKeyParamEnum.OBJECT_ID)
+        let result = validateParams(req.params.id, TypeKeyParamEnum.PK_ORACLE)
         if (result.success) {
             result = await UserService.updateFoto(Number.parseInt(req.params.id),fotoB64,getAuthUser(req));
+        }
+        return res.status(200).send(result);
+    }
+    public async obtenerFoto(req: Request, res: Response): Promise<Response> {
+        let result = validateParams(req.params.username, TypeKeyParamEnum.PARAM_BUSQUEDA)
+        if (result.success) {
+            result = await UserService.obtenerFoto(req.params.username);
         }
         return res.status(200).send(result);
     }
