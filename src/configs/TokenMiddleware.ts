@@ -16,7 +16,7 @@ export const TokenMiddleware = (req: Request, res: Response, next: NextFunction)
             const decodeToken = getAuthUser(req)
 
             if (token && decodeToken.activo) {
-                res = encodeToken(res, decodeToken.username, decodeToken.name, decodeToken.rol, decodeToken.aRolId, decodeToken.aSucursal, decodeToken.sucursal, decodeToken.departamento);
+                res = encodeToken(res, decodeToken.username, decodeToken.name, decodeToken.rol, decodeToken.aRolId, decodeToken.aSucursal, decodeToken.sucursal, decodeToken.foto);
                 next()
             } else {
                 res.sendStatus(401);
@@ -28,7 +28,7 @@ export const TokenMiddleware = (req: Request, res: Response, next: NextFunction)
 
 }
 
-export const encodeToken = (res: Response, usuario: string, nombre: string, rol: string[], rolId: string[], aSucursal: number[], sucursal: number, departamento: number) => {
+export const encodeToken = (res: Response, usuario: string, nombre: string, rol: string[], rolId: string[], aSucursal: number[], sucursal: number, foto: string) => {
     const userForToken: JwtPayload = {
         username: usuario,
         name: nombre,
@@ -36,7 +36,7 @@ export const encodeToken = (res: Response, usuario: string, nombre: string, rol:
         aRolId: rolId,
         aSucursal: aSucursal,
         sucursal: sucursal,
-        departamento: departamento,
+        foto: foto,
         activo: true
     }
 
@@ -52,7 +52,7 @@ export const encodeToken = (res: Response, usuario: string, nombre: string, rol:
     return res;
 }
 
-export const getToken = (res: Response, usuario: string, nombre: string, rol: string[], rolId: string[], aSucursal: number[], sucursal: number, departamento: number) => {
+export const getToken = (res: Response, usuario: string, nombre: string, rol: string[], rolId: string[], aSucursal: number[], sucursal: number, foto: string) => {
     const userForToken: JwtPayload = {
         username: usuario,
         name: nombre,
@@ -60,7 +60,7 @@ export const getToken = (res: Response, usuario: string, nombre: string, rol: st
         aRolId: rolId,
         aSucursal: aSucursal,
         sucursal: sucursal,
-        departamento: departamento,
+        foto: foto,
         activo: true
     }
 
@@ -82,7 +82,7 @@ export const getAuthUser = (req: Request) => {
         aRolId: [],
         aSucursal: [],
         sucursal: 0,
-        departamento: 0,
+        foto: "",
         activo: false
     } as JwtPayload;
     try {

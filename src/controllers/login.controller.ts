@@ -15,7 +15,7 @@ class LoginController {
         if(result.success){
             result = await AuthService.auth(username,password);
             if(result.success){
-                res =  encodeToken(res, username, result.data.NOMBRE, result.data.ROL,result.data.ROL_ID, result.data.SUCURSALES,result.data.SUCURSAL_PRINCIPAL,result.data.DEPARTAMENTO);
+                res =  encodeToken(res, username, result.data.NOMBRE, result.data.ROL,result.data.ROL_ID, result.data.SUCURSALES,result.data.SUCURSAL_PRINCIPAL,"");
             }
         }
         return res.status(200).send(result);

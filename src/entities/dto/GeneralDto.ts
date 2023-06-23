@@ -5,7 +5,7 @@ export interface JwtPayload {
     aRolId: string[],
     aSucursal: number[],
     sucursal: number,
-    departamento: number,
+    foto: string,
     activo: Boolean,
 }
 
